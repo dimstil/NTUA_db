@@ -1,4 +1,6 @@
 create database if not exists libraryDB;
+USE libraryDB;
+set default_storage_engine=MyISAM;
 
 drop table if exists reminder;
 drop table if exists borrows;
@@ -54,7 +56,7 @@ create table if not exists author(
 create table if not exists category(
 	categoryName varchar(60),
     supercategoryName varchar(60),
-    primary key (cateboryName),
+    primary key (categoryName),
     foreign key(supercategoryName) references category(categoryName) on delete set null
     );
 create table if not exists copies(
