@@ -1,114 +1,125 @@
-drop table if exists test.reminder;
-drop table if exists test.borrows;
-drop table if exists test.Member;
-drop table if exists test.copies;
-drop table if exists test.belongs_to;
-drop table if exists test.written_by;
-drop table if exists test.book;
-drop table if exists test.Publisher;
-drop table if exists test.author;
-drop table if exists test.category;
-drop table if exists test.permanent_employee;
-drop table if exists test.temporary_employee;
-drop table if exists test.employee;
+create database if not exists libraryDB;
 
-create table if not exists test.Member(
-	memberID int PRIMARY KEY AUTO_INCREMENT not null,
-    Mfirst text,
-    Mlast text,
-    Street text,
-    number smallint,
+drop table if exists reminder;
+drop table if exists borrows;
+drop table if exists Member;
+drop table if exists copies;
+drop table if exists belongs_to;
+drop table if exists written_by;
+drop table if exists book;
+drop table if exists Publisher;
+drop table if exists author;
+drop table if exists category;
+drop table if exists permanent_employee;
+drop table if exists temporary_employee;
+drop table if exists employee;
+
+create table if not exists Member(
+    memberID int  auto_increment,
+    mFirst text,
+    mLast text,
+    street text,
+    streetNumber smallint,
     postalCode char(5),
-    Mbirthdate int
+    mBirthdate date,
+    primary key (memberID)
     );
 
-create table if not exists test.publisher(
-	pubName varchar(60) primary key not null,
+create table if not exists publisher(
+	pubName varchar(60),
     estYear int,
     street text,
-    number smallint,
-    postalCode char(5)
+    streetNumber smallint,
+    postalCode char(5),
+    primary key (pubName)
     );
 
-create table if not exists test.Book(
-	ISBN char(16) PRIMARY KEY not null,
+create table if not exists Book(
+	ISBN char(16),
     title text,
     pubYear int,
     numpages int,
     pubName varchar(60) not null,
-	foreign key(pubName) references publisher(pubName) 
+    primary key (ISBN),
+	foreign key(pubName) references publisher(pubName) on delete cascade
 );
-create table if not exists test.author(
-	authID int PRIMARY KEY auto_increment not null,
-    AFirst varchar(60),
-    ALast varchar(60),
-    Abithdate int
+
+create table if not exists author(
+	authID int auto_increment,
+    aFirst varchar(60),
+    aLast varchar(60),
+    aBithdate date,
+    primary key (authID)
 );
-create table if not exists test.category(
-	categoryName varchar(60) primary key not null,
+create table if not exists category(
+	categoryName varchar(60),
     supercategoryName varchar(60),
-    foreign key(supercategoryName) references category(categoryName)
+    primary key (cateboryName),
+    foreign key(supercategoryName) references category(categoryName) on delete set null
     );
-create table if not exists test.copies(
+create table if not exists copies(
 	ISBN char(16) not null, 
-    copyNr int not null,
+    copyNr int not null auto_increment,
     shelf  varchar(20),
     primary key(ISBN,copyNr),
-    foreign key(ISBN) references Book(ISBN)
+    foreign key(ISBN) references Book(ISBN) on delete cascade
 );
-create table if not exists test.employee(
-	empID int primary key auto_increment not null, 
-    EFirst varchar(60),
-    ELast varchar(60), 
-    salary int
+create table if not exists employee(
+	empID int auto_increment, 
+    eFirst varchar(60),
+    eLast varchar(60), 
+    salary int,
+    primary key (empID)
 );
-create table if not exists test.permanent_employee(
-	empID int primary key auto_increment not null , 
-	HiringDate date,
-    foreign key(empID) references employee(empID)
+create table if not exists permanent_employee(
+	empID int auto_increment, 
+	hiringDate date,
+    primary key (empID),
+    foreign key(empID) references employee(empID) on delete cascade
 );
-create table if not exists test.temporary_employee(
-	empID int primary key auto_increment not null,
-    ContractNr varchar(30),
-    foreign key(empID) references employee(empID)
+create table if not exists temporary_employee(
+	empID int auto_increment,
+    contractNr varchar(30),
+    primary key (empID),
+    foreign key(empID) references employee(empID) on delete cascade
     );
-create table if not exists test.borrows(
+create table if not exists borrows(
 	memberID int not null,
     ISBN char(16) not null,
     copyNr int not null, 
     date_of_borrowing date not null, 
     date_of_return date not null,
     primary key(memberID, ISBN, copyNr, date_of_borrowing),
-    foreign key(memberID) references Member(memberID),
-    foreign key(ISBN) references Book(ISBN),
-    foreign key(ISBN,copyNr) references copies(ISBN,copyNr)
+    foreign key(memberID) references Member(memberID) on delete cascade,
+    foreign key(ISBN) references Book(ISBN) on delete cascade,
+    foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade
 );
-create table if not exists test.belongs_to(
-	ISBN char(16) not null, 
+create table if not exists belongs_to(
+	ISBN char(16) not null,
     categoryName varchar(60) not null,
     primary key(ISBN,categoryName),
-    foreign key(ISBN) references Book(ISBN),
-    foreign key(categoryName) references category(categoryName)
+    foreign key(ISBN) references Book(ISBN) on delete cascade,
+    foreign key(categoryName) references category(categoryName) on delete cascade
 );
-create table if not exists test.reminder(
-	empID int not null, 
-    memberID int not null, 
+create table if not exists reminder(
+	empID int not null,
+    memberID int not null,
     ISBN char(16) not null,
     copyNr int not null,
     date_of_borrowing date not null, 
     date_of_reminder date not null,
     primary key(empID,memberID,ISBN,copyNr,date_of_borrowing,date_of_reminder),
-    foreign key(empID) references employee(empID),
-    foreign key(memberID) references Member(memberID),
-    foreign key(ISBN) references Book(ISBN),
+    foreign key(empID) references employee(empID) on delete cascade,
+    foreign key(memberID) references Member(memberID) on delete cascade,
+    foreign key(ISBN) references Book(ISBN) on delete cascade,
     foreign key(memberID, ISBN, copyNr,date_of_borrowing) references  borrows(
-    memberID, ISBN, copyNr, date_of_borrowing)
+    memberID, ISBN, copyNr, date_of_borrowing) on delete cascade
 
 );
 create table if not exists written_by(
 	ISBN char(16) not null, 
     authID int not null,
     primary key(ISBN, authID),
-    foreign key(ISBN) references Book(ISBN),
-    foreign key(authID) references author(authID)
+    foreign key(ISBN) references Book(ISBN) on delete cascade,
+    foreign key(authID) references author(authID) on delete cascade
 );
