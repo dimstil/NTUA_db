@@ -1,6 +1,10 @@
+drop database if exists librarydb;
 create database if not exists libraryDB;
 USE libraryDB;
+
 set default_storage_engine=MyISAM;
+set FOREIGN_KEY_CHECKS = 1;
+
 
 drop table if exists reminder;
 drop table if exists borrows;
@@ -16,6 +20,7 @@ drop table if exists permanent_employee;
 drop table if exists temporary_employee;
 drop table if exists employee;
 
+
 create table if not exists Member(
     memberID int  auto_increment,
     mFirst text,
@@ -24,7 +29,8 @@ create table if not exists Member(
     streetNumber smallint,
     postalCode char(5),
     mBirthdate date,
-    primary key (memberID)
+    primary key (memberID),
+    constraint valid_postalcode check (regexp_like(postalcode, '[0-9]+$'))
     );
 
 create table if not exists publisher(
@@ -33,17 +39,19 @@ create table if not exists publisher(
     street text,
     streetNumber smallint,
     postalCode char(5),
-    primary key (pubName)
+    primary key (pubName),
+	check (regexp_like(postalcode, '[0-9]+$'))
     );
 
 create table if not exists Book(
-	ISBN char(16),
+	ISBN char(13),
     title text,
     pubYear int,
     numpages int,
     pubName varchar(60) not null,
     primary key (ISBN),
-	foreign key(pubName) references publisher(pubName) on delete cascade
+	foreign key(pubName) references publisher(pubName) on delete cascade,
+    constraint valid_isbn check (regexp_like(isbn, '[0-9]+$'))
 );
 
 create table if not exists author(
@@ -53,19 +61,22 @@ create table if not exists author(
     aBithdate date,
     primary key (authID)
 );
+
 create table if not exists category(
 	categoryName varchar(60),
-    supercategoryName varchar(60),
+    supercategoryName varchar(60) default null,
     primary key (categoryName),
     foreign key(supercategoryName) references category(categoryName) on delete set null
     );
+
 create table if not exists copies(
-	ISBN char(16) not null, 
+	ISBN char(13) not null, 
     copyNr int not null auto_increment,
     shelf  varchar(20),
     primary key(ISBN,copyNr),
     foreign key(ISBN) references Book(ISBN) on delete cascade
 );
+
 create table if not exists employee(
 	empID int auto_increment, 
     eFirst varchar(60),
@@ -73,6 +84,7 @@ create table if not exists employee(
     salary int,
     primary key (empID)
 );
+
 create table if not exists permanent_employee(
 	empID int auto_increment, 
 	hiringDate date,
@@ -87,7 +99,7 @@ create table if not exists temporary_employee(
     );
 create table if not exists borrows(
 	memberID int not null,
-    ISBN char(16) not null,
+    ISBN char(13) not null,
     copyNr int not null, 
     date_of_borrowing date not null, 
     date_of_return date not null,
@@ -96,8 +108,9 @@ create table if not exists borrows(
     foreign key(ISBN) references Book(ISBN) on delete cascade,
     foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade
 );
+
 create table if not exists belongs_to(
-	ISBN char(16) not null,
+    isbn char(13) not null,
     categoryName varchar(60) not null,
     primary key(ISBN,categoryName),
     foreign key(ISBN) references Book(ISBN) on delete cascade,
@@ -106,7 +119,7 @@ create table if not exists belongs_to(
 create table if not exists reminder(
 	empID int not null,
     memberID int not null,
-    ISBN char(16) not null,
+    ISBN char(13) not null,
     copyNr int not null,
     date_of_borrowing date not null, 
     date_of_reminder date not null,
@@ -119,9 +132,10 @@ create table if not exists reminder(
 
 );
 create table if not exists written_by(
-	ISBN char(16) not null, 
+	ISBN char(13) not null, 
     authID int not null,
     primary key(ISBN, authID),
     foreign key(ISBN) references Book(ISBN) on delete cascade,
     foreign key(authID) references author(authID) on delete cascade
 );
+
