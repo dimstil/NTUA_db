@@ -1,8 +1,8 @@
-drop database if exists librarydb;
-create database if not exists libraryDB;
-USE libraryDB;
+-- drop database if exists librarydb;
+-- create database if not exists libraryDB;
+use libraryDB;
 
-set default_storage_engine=MyISAM;
+set default_storage_engine=InnoDB;
 set FOREIGN_KEY_CHECKS = 1;
 
 
@@ -30,7 +30,7 @@ create table if not exists Member(
     postalCode char(5),
     mBirthdate date,
     primary key (memberID),
-    constraint valid_postalcode check (regexp_like(postalcode, '[0-9]+$'))
+    check (regexp_like(postalcode, '[0-9]+$') and length(postalcode) = 5)
     );
 
 create table if not exists publisher(
@@ -40,7 +40,7 @@ create table if not exists publisher(
     streetNumber smallint,
     postalCode char(5),
     primary key (pubName),
-	check (regexp_like(postalcode, '[0-9]+$'))
+	check (regexp_like(postalcode, '[0-9]+$') and length(postalcode) = 5)
     );
 
 create table if not exists Book(
@@ -51,7 +51,7 @@ create table if not exists Book(
     pubName varchar(60) not null,
     primary key (ISBN),
 	foreign key(pubName) references publisher(pubName) on delete cascade,
-    constraint valid_isbn check (regexp_like(isbn, '[0-9]+$'))
+    check (regexp_like(isbn, '[0-9]+$') and length(isbn) = 13)
 );
 
 create table if not exists author(
@@ -71,7 +71,7 @@ create table if not exists category(
 
 create table if not exists copies(
 	ISBN char(13) not null, 
-    copyNr int not null auto_increment,
+    copyNr int not null,
     shelf  varchar(20),
     primary key(ISBN,copyNr),
     foreign key(ISBN) references Book(ISBN) on delete cascade
