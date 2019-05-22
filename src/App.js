@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import logo from './logo.svg';
 import './App.css';
-
+import GetBook from './GetBook';
 class App extends Component {
   constructor() {
     super();
@@ -41,7 +41,10 @@ class App extends Component {
           Published by: <input type="text" id="pub-name" />
           <button onClick={this.insert}>Add book</button>
         </form>
+		
+		<GetBook/>
       </div>
+	 
     );
   }
 }

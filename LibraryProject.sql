@@ -1,5 +1,5 @@
--- drop database if exists librarydb;
--- create database if not exists libraryDB;
+drop database if exists librarydb;
+create database if not exists libraryDB;
 use libraryDB;
 
 set default_storage_engine=InnoDB;

@@ -16,7 +16,8 @@ const con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "librarydb"
+  database: "librarydb",
+  port: "3306"
 });
 
 con.connect((err) => {
@@ -31,5 +32,20 @@ app.route('/book')
   res.send({status: 'succ'});
 })
 .get((req, res) => {
-
+	
+	var qdata = req.data;
+	var selectQuery = "select *,count(*)" + 
+			"from book join copies on book.ISBN=copies.ISBN" + 
+			"group by book.ISBN";
+	if(Object.keys(qdata).length !== 0){
+		selectQuery+=" where"
+	for(x in qdata){
+		selectQuery+=" book."+x+"like'%"+qdata[x]+"%' and";
+	}
+	selectQuery = selectQuery.substring(0,selectQuery.length-4) + ";";
+	
+	con.query(selectQuery, function(err, result, fields){
+		if(err) throw err;
+		res.json(result);
+	});
 })
