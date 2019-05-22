@@ -1,4 +1,5 @@
 delimiter $$
+
 create trigger create_category_on_book_insert 
 before insert on belongs_to
 for each row
