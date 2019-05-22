@@ -1,6 +1,6 @@
 delimiter $$
 create trigger create_category_on_book_insert 
-after insert on belongs_to
+before insert on belongs_to
 for each row
 begin
 if not exists (select * from category
