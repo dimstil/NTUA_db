@@ -50,7 +50,7 @@ create table if not exists Book(
     numpages int,
     pubName varchar(60) not null,
     primary key (ISBN),
-	foreign key(pubName) references publisher(pubName) on delete cascade,
+	foreign key(pubName) references publisher(pubName) on delete cascade on update cascade,
     check (regexp_like(isbn, '[0-9]+$') and length(isbn) = 13)
 );
 
@@ -66,7 +66,7 @@ create table if not exists category(
 	categoryName varchar(60),
     supercategoryName varchar(60) default null,
     primary key (categoryName),
-    foreign key(supercategoryName) references category(categoryName) on delete set null
+    foreign key(supercategoryName) references category(categoryName) on delete set null on update cascade
     );
 
 create table if not exists copies(
@@ -74,7 +74,7 @@ create table if not exists copies(
     copyNr int not null,
     shelf  varchar(20),
     primary key(ISBN,copyNr),
-    foreign key(ISBN) references Book(ISBN) on delete cascade
+    foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade
 );
 
 create table if not exists employee(
@@ -89,32 +89,32 @@ create table if not exists permanent_employee(
 	empID int auto_increment, 
 	hiringDate date,
     primary key (empID),
-    foreign key(empID) references employee(empID) on delete cascade
+    foreign key(empID) references employee(empID) on delete cascade on update cascade
 );
 create table if not exists temporary_employee(
 	empID int auto_increment,
     contractNr varchar(30),
     primary key (empID),
-    foreign key(empID) references employee(empID) on delete cascade
+    foreign key(empID) references employee(empID) on delete cascade on update cascade
     );
 create table if not exists borrows(
 	memberID int not null,
     ISBN char(13) not null,
     copyNr int not null, 
     date_of_borrowing date not null, 
-    date_of_return date not null,
+    date_of_return date null,
     primary key(memberID, ISBN, copyNr, date_of_borrowing),
-    foreign key(memberID) references Member(memberID) on delete cascade,
-    foreign key(ISBN) references Book(ISBN) on delete cascade,
-    foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade
+    foreign key(memberID) references Member(memberID) on delete cascade on update cascade,
+    foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
+    foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade on update cascade
 );
 
 create table if not exists belongs_to(
     isbn char(13) not null,
     categoryName varchar(60) not null,
     primary key(ISBN,categoryName),
-    foreign key(ISBN) references Book(ISBN) on delete cascade,
-    foreign key(categoryName) references category(categoryName) on delete cascade
+    foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
+    foreign key(categoryName) references category(categoryName) on delete cascade on update cascade
 );
 create table if not exists reminder(
 	empID int not null,
@@ -124,18 +124,18 @@ create table if not exists reminder(
     date_of_borrowing date not null, 
     date_of_reminder date not null,
     primary key(empID,memberID,ISBN,copyNr,date_of_borrowing,date_of_reminder),
-    foreign key(empID) references employee(empID) on delete cascade,
-    foreign key(memberID) references Member(memberID) on delete cascade,
-    foreign key(ISBN) references Book(ISBN) on delete cascade,
+    foreign key(empID) references employee(empID) on delete cascade on update cascade,
+    foreign key(memberID) references Member(memberID) on delete cascade on update cascade,
+    foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
     foreign key(memberID, ISBN, copyNr,date_of_borrowing) references  borrows(
-    memberID, ISBN, copyNr, date_of_borrowing) on delete cascade
+    memberID, ISBN, copyNr, date_of_borrowing) on delete cascade on update cascade
 
 );
 create table if not exists written_by(
 	ISBN char(13) not null, 
     authID int not null,
     primary key(ISBN, authID),
-    foreign key(ISBN) references Book(ISBN) on delete cascade,
-    foreign key(authID) references author(authID) on delete cascade
+    foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
+    foreign key(authID) references author(authID) on delete cascade on update cascade
 );
 
