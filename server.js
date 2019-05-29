@@ -36,7 +36,9 @@ app.route('/book')
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
-    var selectQuery = "select book.isbn, title, pubYear, numpages, pubName, count(copies.isbn) from book left join copies on book.ISBN=copies.ISBN"
+    var selectQuery = "select book.isbn as \"ISBN\", title as \"Title\", pubYear as \"Published on\", numpages as \"No. of Pages\", pubName as \"Published by\", count(copies.isbn) as \"No. of Copies\" from book left join copies on book.ISBN=copies.ISBN"
+    const orderBy = qdata["by"];
+    delete qdata["by"];
     if (Object.keys(qdata).length !== 0) {
       selectQuery += " where"
       for (x in qdata) {
@@ -49,10 +51,20 @@ app.route('/book')
       }
       selectQuery = selectQuery.substring(0, selectQuery.length - 4);
     }
-    selectQuery += " group by book.ISBN;";
+    
+    selectQuery += " group by book.ISBN";
+    if(orderBy !== undefined) selectQuery += ` order by ${orderBy}`;
+    selectQuery += ';';
+    
     console.log(selectQuery);
-    con.query(selectQuery, function (err, result, fields) {
+    con.query(selectQuery, (err, result, fields) => {
       if (err) throw err;
-      res.json(result);
+      namesObj = {}; 
+      orgNamesObj = {};
+      fields.map((obj ,i) => { 
+        namesObj[i] = obj.name;
+        orgNamesObj[i] = obj.orgName;
+      });
+      res.json([orgNamesObj, namesObj].concat(result));
     });
   })

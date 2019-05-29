@@ -6,12 +6,16 @@ import { type } from 'os';
 import GetBook from './Components/GetBook';
 import SideDrawer from './Components/SideDrawer/SideDrawer';
 import Backdrop from './Components/Backdrop/Backdrop';
+import DisplayTable from './Components/DisplayTable';
 class App extends Component {
   constructor() {
     super();
     this.state = {
       sideDrawerOpen: false,
-      type: "homepage"
+      type: "homepage",
+      displayedData: [],
+      displayedFields: {},
+      query: {}
     };
   }
 
@@ -33,22 +37,18 @@ class App extends Component {
       sideDrawerOpen: false,
       type: "homepage"
     });
-  }
+  };
+
+  displayData = (query, displayedData, displayedFields) => {
+    this.setState({query: query, displayedData: displayedData, displayedFields: displayedFields});
+  };
 
   backdropClickHandler = () => {
     this.setState({sideDrawerOpen: false});
-  }
-
-  renderBasedOnType(){
-    if (this.state[type] === "book"){
-      return(<GetBook/>);
-    } else {
-      return(<div/>);
-    }
-  }
+  };
+  
 
   render() {
-  
     let backdrop;
     let renderType;
     if (this.state.sideDrawerOpen) {
@@ -56,19 +56,20 @@ class App extends Component {
     }
 
     if (this.state.type === "book"){
-      renderType = <GetBook />;
+      renderType = <GetBook displayData={this.displayData}/>;
     } else {
       renderType = <div />
     }
 
     return (
-      <div className="App" style={{height: '100%'}}>
+      <div className="App">
 		    <Toolbar changeType={this.setBookType} home={this.setHomepageType} drawerClickHandler={this.drawerToggleClickHandler}/>
         <SideDrawer show={this.state.sideDrawerOpen} />
         {backdrop}
-        <main style={{marginTop: '64px'}}>
+        <main>
           <div className="Content">
             {renderType}
+          <DisplayTable type={this.state.type} query={this.state.query} displayedData={this.state.displayedData} displayedFields={this.state.displayedFields} />
           </div>
         </main>
         
@@ -77,4 +78,5 @@ class App extends Component {
     );
   }
 }
+
 export default App;

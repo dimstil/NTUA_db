@@ -20,7 +20,6 @@ drop table if exists permanent_employee;
 drop table if exists temporary_employee;
 drop table if exists employee;
 
-
 create table if not exists Member(
     memberID int  auto_increment,
     mFirst text,
@@ -108,7 +107,6 @@ create table if not exists borrows(
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
     foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade on update cascade
 );
-
 create table if not exists belongs_to(
     isbn char(13) not null,
     categoryName varchar(60) not null,
