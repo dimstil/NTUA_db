@@ -10,16 +10,19 @@ class DisplayTable extends Component {
             address: "",
             displayedData: [],
             displayedFields: {},
-            query: {}
+            query: {},
+            prim_key: {}
         };
     }
 
     componentWillReceiveProps(props) {
+      console.log(props)
         this.setState({
             address: 'http://localhost:5000/' + props.type,
             displayedData: props.displayedData,
             displayedFields: props.displayedFields,
-            query: props.query
+            query: props.query,
+            prim_key: props.prim_key
         })
     }
 
@@ -46,28 +49,37 @@ class DisplayTable extends Component {
                 }
             })
                 .then((response) => {
-                    this.setState({ displayedData: response.data.splice(1), displayedFields: response.data[0] });
+                  console.log(response);
+                    this.setState({ displayedData: [response.data["orgName"]].concat(response.data["result"]), displayedFields: response.data["names"], prim_key: response.data["prim_key"] });
+                    console.log(this.state);
                 });
         }
     }
 
+    // deleteEntry = (i) => {
+    //   axios.delete(this.state.address,
+    //     {
+    //
+    //     })
+//    }
+
     render() {
-        console.log(this.state.displayedData[0])
+        console.log(this.state.displayedData)
         const displayType = (this.state.displayedData.length === 1 ? (<p>No results found</p>) :
             (<table id="books">
                 <thead>
                     {
-                        (<TableHead onClick={this.orderBy} order="" values={this.state.displayedFields} object={this.state.displayedData[0]}></TableHead>)
+                        (<TableHead onClick={this.orderBy} order="" values={Object.values(this.state.displayedFields)} object={this.state.displayedData[0]}></TableHead>)
                     }
                 </thead>
                 <tbody>
                     {
                         this.state.displayedData.slice(1).map((bookObj, i) =>
-                            (<TableRow key={i} object={bookObj}></TableRow>))
+                            (<TableRow key={i} object={bookObj} prim_key={this.state.prim_key}></TableRow>))
                     }
                 </tbody>
             </table>));
-
+            console.log(this.state.displayedFields);
         return (
             <div className="display">
                 {displayType}
@@ -78,12 +90,16 @@ class DisplayTable extends Component {
 }
 
 const TableHead = (props) => {
+    console.log(props.values);
+    console.log(props.object);
     if (props.object !== undefined) {
     return (
         <tr>
+
             {Object.values(props.object).map((domain, i) =>
-                <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]} >{domain}</td>
+                <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]}>{domain}</td>
             )}
+            <td>del</td>
         </tr>
     )
 }
@@ -91,12 +107,16 @@ return null;
 }
 
 const TableRow = (props) => {
+    console.log(props.object);
     if (props.object !== undefined) {
         return (
             <tr>
                 {Object.values(props.object).map((domain, i) =>
                     <td key={i}>{domain}</td>
                 )}
+                <td><div onClick={deleteEntry(props.prim_key.map((key,i) =>
+                    props.object[key];
+                ))} /></td>
             </tr>
         )
     }

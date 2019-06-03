@@ -51,20 +51,22 @@ app.route('/book')
       }
       selectQuery = selectQuery.substring(0, selectQuery.length - 4);
     }
-    
+
     selectQuery += " group by book.ISBN";
     if(orderBy !== undefined) selectQuery += ` order by ${orderBy}`;
     selectQuery += ';';
-    
+
     console.log(selectQuery);
     con.query(selectQuery, (err, result, fields) => {
       if (err) throw err;
-      namesObj = {}; 
+      namesObj = {};
       orgNamesObj = {};
-      fields.map((obj ,i) => { 
+      prim_key=["ISBN"];
+      fields.map((obj ,i) => {
         namesObj[i] = obj.name;
         orgNamesObj[i] = obj.orgName;
       });
-      res.json([orgNamesObj, namesObj].concat(result));
+
+      res.json({"prim_key":prim_key,"orgName":namesObj,"names":orgNamesObj,"result": result});
     });
   })

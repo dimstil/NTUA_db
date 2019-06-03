@@ -15,6 +15,7 @@ class App extends Component {
       type: "homepage",
       displayedData: [],
       displayedFields: {},
+      prim_key: {},
       query: {}
     };
   }
@@ -39,14 +40,15 @@ class App extends Component {
     });
   };
 
-  displayData = (query, displayedData, displayedFields) => {
-    this.setState({query: query, displayedData: displayedData, displayedFields: displayedFields});
+  displayData = (query, displayedData, displayedFields, prim_key) => {
+    console.log(query, displayedData, displayedFields, prim_key);
+    this.setState({query: query, displayedData: displayedData, displayedFields: displayedFields, prim_key: prim_key});
   };
 
   backdropClickHandler = () => {
     this.setState({sideDrawerOpen: false});
   };
-  
+
 
   render() {
     let backdrop;
@@ -69,12 +71,12 @@ class App extends Component {
         <main>
           <div className="Content">
             {renderType}
-          <DisplayTable type={this.state.type} query={this.state.query} displayedData={this.state.displayedData} displayedFields={this.state.displayedFields} />
+          <DisplayTable type={this.state.type} query={this.state.query} displayedData={this.state.displayedData} displayedFields={this.state.displayedFields} prim_key={this.state.prim_key}/>
           </div>
         </main>
-        
+
       </div>
-	 
+
     );
   }
 }

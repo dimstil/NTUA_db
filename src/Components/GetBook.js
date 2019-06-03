@@ -16,7 +16,7 @@ class GetBook extends Component {
 			}
 		})
 			.then((response) => {
-				this.props.displayData({}, response.data.splice(1), response.data[0]);
+				this.props.displayData({}, [response.data["orgName"]].concat(response.data["result"]), response.data["names"], response.data["prim_key"]);
 			});
 	}
 
@@ -45,7 +45,7 @@ class GetBook extends Component {
 			}
 		})
 			.then((response) => {
-				this.props.displayData(selquer, response.data.splice(1), response.data[0]);
+				this.props.displayData(selquer, [response.data["orgName"]].concat(response.data["result"]), response.data["names"], response.data["prim_key"]);
 			});
 	};
 
