@@ -28,10 +28,10 @@ class GetAuthor extends Component {
 			e.preventDefault();
 			const formFields = [document.querySelector('#sel-authID'), document.querySelector('#sel-aFirst'),
 			document.querySelector('#sel-aLast'), document.querySelector('#sel-aBirthdate')];
-			const [authID, aFirst, aLast, aBirthdate] = formFields.map((field) => field.value);
+			const [ID, aFirst, aLast, aBirthdate] = formFields.map((field) => field.value);
 			formFields.map((field) => field.value = "");
 			var selquer = {
-				authID: authID,
+				ID: ID,
 				aFirst: aFirst,
 				aLast: aLast,
 				aBirthdate: aBirthdate

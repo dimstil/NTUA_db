@@ -14,7 +14,7 @@ const Toolbar = props => (
                     <ul>
                         <li><a onClick={()=>(props.changeType("book"))} style={{cursor: 'pointer'}}>Books</a></li>
                         <li><a onClick={()=>(props.changeType("author"))} style={{cursor: 'pointer'}}>Authors</a></li>
-                        <li><a onClick={()=>(props.changeType("user"))} style={{cursor: 'pointer'}}>Users</a></li>
+                        <li><a onClick={()=>(props.changeType("member"))} style={{cursor: 'pointer'}}>Users</a></li>
 
                     </ul>
                 </div>

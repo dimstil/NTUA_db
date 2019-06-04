@@ -49,6 +49,44 @@ class GetBook extends Component {
 			});
 	};
 
+	insUpdate = (e) => {
+		e.preventDefault();
+		const isbn = document.querySelector('#sel-isbn');
+		const title = document.querySelector('#sel-title');
+		const pubYear = document.querySelector('#sel-pub-year');
+		const numPage = document.querySelector('#sel-page-num');
+		const pubName = document.querySelector('#sel-pub-name');
+		var selquer = {
+			isbn: isbn,
+			title: title,
+			pubYear: pubYear,
+			numPages: numPage,
+			pubName: pubName
+		};
+
+		Object.keys(selquer).forEach((field)=>{
+			if(selquer[field] === null){
+				this.props.error('Important Field is Empty');
+				return;
+			}
+		});
+		//formFields.map((field) => field.value = "");
+
+		for (var x in selquer) {
+			if (selquer[x] === "") {
+				delete selquer[x];
+			}
+		}
+		axios.post('http://localhost:5000/book', {
+			params: {
+				query: selquer
+			}
+		})
+			.then((response) => {
+				this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
+			});
+	};
+
 	render() {
 		return (
 			<div className="GetBook">
@@ -60,6 +98,7 @@ class GetBook extends Component {
 					#pages : <input type="text" id="sel-page-num" />
 					Published by: <input type="text" id="sel-pub-name" />
 					<button onClick={this.getBook}>Get book</button>
+					<button onClick={this.insUpdate} className="formInput">Insert/Update</button>
 				</form>
 			</div>
 		);

@@ -110,7 +110,7 @@ const TableHead = (props) => {
         <tr>
 
             {Object.values(props.object).map((domain, i) =>
-                <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]}>{domain}</td>
+                <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]} style={{cursor: 'pointer'}}>{domain}</td>
             )}
             <td>   </td>
         </tr>

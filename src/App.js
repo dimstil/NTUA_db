@@ -5,6 +5,7 @@ import Toolbar from './Components/Toolbar/Toolbar'
 import { type } from 'os';
 import GetBook from './Components/GetBook';
 import GetAuthor from './Components/GetAuthor';
+import GetUser from './Components/GetUser';
 import SideDrawer from './Components/SideDrawer/SideDrawer';
 import Backdrop from './Components/Backdrop/Backdrop';
 import DisplayTable from './Components/DisplayTable';
@@ -82,6 +83,15 @@ class App extends Component {
               prim_key={this.state.prim_key}/>
             </div>
         break;  
+        case("member"):
+        renderType = <div className="App-Content">
+          <GetUser displayData={this.displayData}/>
+          <DisplayTable type={this.state.type} query={this.state.query} 
+              displayedData={this.state.displayedData} 
+              displayedFields={this.state.displayedFields} 
+              prim_key={this.state.prim_key}/>
+            </div>
+        break; 
       default:
         renderType = <h1>ERROR</h1>;  
     }
