@@ -30,7 +30,7 @@ con.connect((err) => {
 app.route('/book')
   .post((req, res) => {
     console.log(req.params);
-    con.query(`insert into book(isbn, title, pubYear, numpages, pubName) values(\'${req.body.isbn}\', \'${req.body.title}\', ${req.body.pubYear}, ${req.body.numPage}, \'${req.body.pubName}\');`);
+    con.query(`insert into book(isbn, title, pubYear, numpages, pubName) values(\'${req.body.isbn}\', \'${req.body.title}\', ${req.body.pubYear}, ${req.body.numPages}, \'${req.body.pubName}\');`);
     console.log(req.body);
     res.send({ status: 'succ' });
   })

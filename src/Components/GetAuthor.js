@@ -14,6 +14,9 @@ class GetAuthor extends Component {
 		
 		
 	componentDidMount() {
+		this.retrieveData()
+	}
+	retrieveData(){
 		axios.get('http://localhost:5000/author', {
 			params: {
 				query: {}
@@ -29,7 +32,7 @@ class GetAuthor extends Component {
 			const formFields = [document.querySelector('#sel-authID'), document.querySelector('#sel-aFirst'),
 			document.querySelector('#sel-aLast'), document.querySelector('#sel-aBirthdate')];
 			const [ID, aFirst, aLast, aBirthdate] = formFields.map((field) => field.value);
-			formFields.map((field) => field.value = "");
+		//	formFields.map((field) => field.value = "");
 			var selquer = {
 				ID: ID,
 				aFirst: aFirst,
@@ -50,6 +53,32 @@ class GetAuthor extends Component {
 					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
 				});
 		};
+
+		insUpdate = (e) => {
+			e.preventDefault();
+			const formFields = [document.querySelector('#sel-authID'), document.querySelector('#sel-aFirst'),
+			document.querySelector('#sel-aLast'), document.querySelector('#sel-aBirthdate')];
+			const [ID, aFirst, aLast, aBirthdate] = formFields.map((field) => field.value);
+		//	formFields.map((field) => field.value = "");
+			var selquer = {
+				ID: ID,
+				aFirst: aFirst,
+				aLast: aLast,
+				aBirthdate: aBirthdate
+			};
+			for (var x in selquer) {
+				if (selquer[x] === "") {
+					delete selquer[x];
+				}
+			}
+			axios.post('http://localhost:5000/author', selquer)
+				.then((response) => {
+					this.retrieveData();
+					console.log(response);
+				}).then((body) => {
+					console.log(body);
+				});
+		}
 
 	render() {
 		return (

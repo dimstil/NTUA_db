@@ -14,6 +14,9 @@ class GetUser extends Component {
 		
 		
 	componentDidMount() {
+		this.retrieveData();
+	}
+	retrieveData(){
 		axios.get('http://localhost:5000/member', {
 			params: {
 				query: {}
@@ -56,6 +59,37 @@ class GetUser extends Component {
 					console.log(response.data);
 					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
 				});
+		};
+
+		insUpdate = (e) => {
+			e.preventDefault();
+			const formFields = [document.querySelector('#sel-memberID'), document.querySelector('#sel-mFirst'),
+                document.querySelector('#sel-mLast'),document.querySelector('#sel-street'), 
+                document.querySelector('#sel-streetNumber'), document.querySelector('#sel-postalCode'), 
+                document.querySelector('#sel-mBirthdate')];
+			const [ID, mFirst, mLast, street, streetNumber,postalCode, mBirthdate] = formFields.map((field) => field.value);
+			formFields.map((field) => field.value = "");
+			var selquer = {
+				ID: ID,
+				mFirst: mFirst,
+                mLast: mLast,
+                street: street,
+                streetNumber: streetNumber,
+                postalCode: postalCode,
+				mBirthdate: mBirthdate
+			};
+			for (var x in selquer) {
+				if (selquer[x] === "") {
+					delete selquer[x];
+				}
+			}
+			axios.post('http://localhost:5000/member', selquer)
+			.then((response) => {
+				this.retrieveData();
+				console.log(response);
+			}).then((body) => {
+				console.log(body);
+			});
 		};
 
 	render() {

@@ -10,6 +10,9 @@ class GetBook extends Component {
 	}
 
 	componentDidMount() {
+		this.retrieveData()
+	}
+	retrieveData() {
 		axios.get('http://localhost:5000/book', {
 			params: {
 				query: {}
@@ -26,7 +29,7 @@ class GetBook extends Component {
 		document.querySelector('#sel-pub-year'), document.querySelector('#sel-page-num'),
 		document.querySelector('#sel-pub-name')];
 		const [isbn, title, pubYear, numPage, pubName] = formFields.map((field) => field.value);
-		formFields.map((field) => field.value = "");
+		
 		var selquer = {
 			isbn: isbn,
 			title: title,
@@ -51,11 +54,12 @@ class GetBook extends Component {
 
 	insUpdate = (e) => {
 		e.preventDefault();
-		const isbn = document.querySelector('#sel-isbn');
-		const title = document.querySelector('#sel-title');
-		const pubYear = document.querySelector('#sel-pub-year');
-		const numPage = document.querySelector('#sel-page-num');
-		const pubName = document.querySelector('#sel-pub-name');
+		const formFields = [document.querySelector('#sel-isbn'), document.querySelector('#sel-title'),
+		document.querySelector('#sel-pub-year'), document.querySelector('#sel-page-num'),
+		document.querySelector('#sel-pub-name')];
+		const [isbn, title, pubYear, numPage, pubName] = formFields.map((field) => field.value);
+
+		formFields.map((field) => field.value = "");
 		var selquer = {
 			isbn: isbn,
 			title: title,
@@ -63,6 +67,7 @@ class GetBook extends Component {
 			numPages: numPage,
 			pubName: pubName
 		};
+		console.log(selquer);
 
 		Object.keys(selquer).forEach((field)=>{
 			if(selquer[field] === null){
@@ -72,18 +77,17 @@ class GetBook extends Component {
 		});
 		//formFields.map((field) => field.value = "");
 
-		for (var x in selquer) {
-			if (selquer[x] === "") {
-				delete selquer[x];
-			}
-		}
-		axios.post('http://localhost:5000/book', {
-			params: {
-				query: selquer
-			}
-		})
+		// for (var x in selquer) {
+		// 	if (selquer[x] === "") {
+		// 		delete selquer[x];
+		// 	}
+		// }
+		axios.post('http://localhost:5000/book', selquer)
 			.then((response) => {
-				this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
+				this.retrieveData();
+				console.log(response);
+			}).then((body) => {
+				console.log(body);
 			});
 	};
 
