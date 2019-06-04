@@ -69,7 +69,7 @@ class App extends Component {
         renderType = <div />;
         break;
       case("book"):
-        renderType = <div>
+        renderType = <div className="App-Content">
           <GetBook displayData={this.displayData}/>
           <DisplayTable type={this.state.type} query={this.state.query} 
                   displayedData={this.state.displayedData} 
@@ -77,7 +77,7 @@ class App extends Component {
                   prim_key={this.state.prim_key}/></div>;
         break; 
       case("author"):
-        renderType = <div>
+        renderType = <div className="App-Content">
           <GetAuthor displayData={this.displayData}/>
           <DisplayTable type={this.state.type} query={this.state.query} 
               displayedData={this.state.displayedData} 
