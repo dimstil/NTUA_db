@@ -52,7 +52,7 @@ class DisplayTable extends Component {
             })
                 .then((response) => {
                   console.log(response);
-                    this.setState({ displayedData: [response.data["orgName"]].concat(response.data["result"]), displayedFields: response.data["names"], prim_key: response.data["prim_key"] });
+                    this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
                     console.log(this.state);
                 });
         }
@@ -71,7 +71,7 @@ class DisplayTable extends Component {
                 }
             })
             .then((response) => {
-                  this.setState({ displayedData: [response.data["orgName"]].concat(response.data["result"]), displayedFields: response.data["names"], prim_key: response.data["prim_key"] });
+                  this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
               });
         })
    }

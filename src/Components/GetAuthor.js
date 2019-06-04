@@ -20,7 +20,7 @@ class GetAuthor extends Component {
 			}
 		})
 			.then((response) => {
-				this.props.displayData({}, [response.data["orgName"]].concat(response.data["result"]), response.data["names"], response.data["prim_key"]);
+				this.props.displayData({}, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
 			});
 	}
 
@@ -49,7 +49,7 @@ class GetAuthor extends Component {
 				.then((response) => {
 					console.log("response");
 					console.log(response.data);
-					this.props.displayData(selquer, [response.data["orgName"]].concat(response.data["result"]), response.data["names"], response.data["prim_key"]);
+					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
 				});
 		};
 
