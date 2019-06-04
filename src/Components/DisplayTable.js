@@ -120,7 +120,7 @@ const TableHead = (props) => {
             {Object.values(props.object).map((domain, i) =>
                 <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]}>{domain}</td>
             )}
-            <td>del</td>
+            <td>   </td>
         </tr>
     )
 }
@@ -135,7 +135,7 @@ const TableRow = (props) => {
                 {Object.values(props.object).map((domain, i) =>
                     <td key={i}>{domain}</td>
                 )}
-                <td onClick={props.clickFun}></td>
+                <td onClick={props.clickFun} className="delSym">x</td>
             </tr>
         )
     }
