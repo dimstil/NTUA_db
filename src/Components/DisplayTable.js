@@ -72,12 +72,48 @@ class DisplayTable extends Component {
         })
    }
 
+   bookCopy = (i,flag) => {
+    if(flag){
+    axios.get(this.state.address+"Copy",
+      {
+          params: i
+      })
+      .then(() => {
+          axios.get(this.state.address, {
+              params: {
+                  query: this.state.query
+              }
+          })
+          .then((response) => {
+                this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
+            });
+      })
+    } else {
+        axios.get(this.state.address+"Copy",
+        {
+            params: i
+        })
+        .then(() => {
+            axios.get(this.state.address, {
+                params: {
+                    query: this.state.query
+                }
+            })
+            .then((response) => {
+                  this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
+              });
+            })
+        }
+    }
+
     render() {
         const displayType = (this.state.displayedData.length === 1 ? (<p>No results found</p>) :
             (<table id="books">
                 <thead>
                     {
-                        (<TableHead onClick={this.orderBy} order="" values={Object.values(this.state.displayedFields)} object={this.state.displayedData[0]}></TableHead>)
+                        (<TableHead onClick={this.orderBy} order="" values={Object.values(this.state.displayedFields)} 
+                        object={this.state.displayedData[0]} addCopy={(this.state.type==="book")}/> 
+                        )
                     }
                 </thead>
                 <tbody>
@@ -91,7 +127,15 @@ class DisplayTable extends Component {
                                         })
                                     )
                                 )
-                            } ></TableRow>))
+                            } addCopy={(this.state.type==="book")}
+                                manCopy = {
+                                    (flag) => this.bookCopy(
+                                        (pkey)=> ({
+                                            [pkey] : bookObj[pkey]
+                                        },flag)
+                                    )
+                                }>
+                            </TableRow>))
                     }
                 </tbody>
             </table>));
@@ -113,6 +157,7 @@ const TableHead = (props) => {
                 <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]} style={{cursor: 'pointer'}}>{domain}</td>
             )}
             <td>   </td>
+            {(props.addCopy)?<td>Copies</td>:<></>}
         </tr>
     )
 }
@@ -126,7 +171,12 @@ const TableRow = (props) => {
                 {Object.values(props.object).map((domain, i) =>
                     <td key={i}>{domain}</td>
                 )}
-                <td onClick={props.clickFun} className="delSym">x</td>
+                <td onClick={props.clickFun} className="delSym"style={{cursor:'pointer'}}>x</td>
+                {(props.addCopy)?
+                    <td><div onClick={() => {props.manCopy(true)}} className="addSym" style={{cursor:'pointer'}}>+</div>
+                        <div onClick={() => {props.manCopy(false)}} className="redSym" style={{cursor:'pointer'}}>-</div>
+                    </td>:
+                    <></>}
             </tr>
         )
     }
