@@ -70,3 +70,6 @@ app.route('/book')
       res.json({"prim_key":prim_key,"orgName":namesObj,"names":orgNamesObj,"result": result});
     });
   })
+  .delete((req, res) => {
+    console.log(req.query); 
+  })
