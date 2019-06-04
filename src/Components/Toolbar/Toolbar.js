@@ -1,20 +1,20 @@
 import React,{ Component } from 'react';
 import './Toolbar.css';
 import DrawerToggleButton from '../SideDrawer/DrawerToggleButton';
-
+import logo from '../../logo.png'
 
 
 const Toolbar = props => (
         <header className="toolbar">
             <nav className="toolbar_navigation">
                 <div className="toolbar_toggle-button"><DrawerToggleButton click={props.drawerClickHandler}/></div>
-                <div className="toolbar_logo"><a onClick={props.home}>LOGO</a></div>
+                <div className="toolbar_logo"><a onClick={props.home}><img src={logo} alt="NTUA"/></a></div>
                 <div className="spacer"></div>
                 <div className="toolbar_navigation-items">
                     <ul>
-                        <li><a onClick={props.changeType}>Books</a></li>
-                        <li><a href="/">Authors</a></li>
-                        <li><a href="/">Users</a></li>
+                        <li><a onClick={()=>(props.changeType("book"))}>Books</a></li>
+                        <li><a onClick={()=>(props.changeType("author"))}>Authors</a></li>
+                        <li><a onClick={()=>(props.changeType("user"))}>Users</a></li>
 
                     </ul>
                 </div>

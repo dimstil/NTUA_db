@@ -7,6 +7,7 @@ class DisplayTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            type : "",
             address: "",
             displayedData: [],
             displayedFields: {},
@@ -18,6 +19,7 @@ class DisplayTable extends Component {
     componentWillReceiveProps(props) {
       console.log(props)
         this.setState({
+            type: props.type,
             address: 'http://localhost:5000/' + props.type,
             displayedData: props.displayedData,
             displayedFields: props.displayedFields,
