@@ -79,3 +79,57 @@ app.route('/book')
       res.json({});
     });
   })
+
+
+app.route('/author')
+  .post((req, res) => {
+    console.log(req.params);
+    con.query(`insert into author(authID, aFirst, aLast, aBithdate) values(\'${req.body.authID}\', \'${req.body.aFirst}\', ${req.body.aLst}, ${req.body.aBirthdate}\');`);
+    console.log(req.body);
+    res.send({ status: 'succ' });
+  })
+  .get((req, res) => {
+    var qdata = JSON.parse(req.query.query);
+    console.log(qdata);
+    var selectQuery = "select authID as \"ID\", aFirst as \"First Name\", aLast as \"Last Name\", aBirthdate as \"Date of Birth\", count(*) from author left join written_by on author.authID=written_by_authID";
+    const orderBy = qdata["by"];
+    delete qdata["by"];
+    if (Object.keys(qdata).length !== 0) {
+      selectQuery += " where"
+      for (x in qdata) {
+        if (x === "authID") {
+          selectQuery += ` author.${x} =  ${qdata[x]}  and`;
+        }
+        else {
+          selectQuery += ` author.${x} like '%${qdata[x]}%' and`;
+        }
+      }
+      selectQuery = selectQuery.substring(0, selectQuery.length - 4);
+    }
+
+    selectQuery += " group by author.authID";
+    if(orderBy !== undefined) selectQuery += ` order by ${orderBy}`;
+    selectQuery += ';';
+
+    console.log(selectQuery);
+    con.query(selectQuery, (err, result, fields) => {
+      if (err) throw err;
+      namesObj = {};
+      orgNamesObj = {};
+      prim_key=["authID"];
+      fields.map((obj ,i) => {
+        namesObj[i] = obj.name;
+        orgNamesObj[i] = obj.orgName;
+      });
+
+      res.json({"prim_key":prim_key,"orgName":namesObj,"names":orgNamesObj,"result": result});
+    });
+  })
+  .delete((req, res) => {
+    const query = JSON.parse(req.query[0])
+    const deleteQuery = `delete from author where author.authID = ${query.authID};`
+    con.query(deleteQuery, (err) => {
+      if (err) throw err;
+      res.json({});
+    });
+  })

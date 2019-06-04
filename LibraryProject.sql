@@ -57,7 +57,7 @@ create table if not exists author(
 	authID int auto_increment,
     aFirst varchar(60),
     aLast varchar(60),
-    aBithdate date,
+    aBirthdate date,
     primary key (authID)
 );
 

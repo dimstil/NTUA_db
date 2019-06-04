@@ -1,8 +1,8 @@
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('1', 'Manos', 'Gianakakis', '1960-02-13');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('2', 'Sofoklis', 'Tsapas', '1958-11-19');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('3', 'Xristiana', 'Arbeler', '1988-12-21');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('4', 'Marina', 'Karakwstena', '1990-10-17');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('5', 'Leonidas', 'Petropoulos', '1982-04-26');
+INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('1', 'Manos', 'Gianakakis', '1960-02-13');
+INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('2', 'Sofoklis', 'Tsapas', '1958-11-19');
+INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('3', 'Xristiana', 'Arbeler', '1988-12-21');
+INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('4', 'Marina', 'Karakwstena', '1990-10-17');
+INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('5', 'Leonidas', 'Petropoulos', '1982-04-26');
 
 INSERT INTO `librarydb`.`publisher` (`pubName`, `estYear`, `street`, `streetNumber`, `postalCode`) VALUES ('OfhsProd', '1997', 'Amalias', '18', '12345');
 INSERT INTO `librarydb`.`publisher` (`pubName`, `estYear`, `street`, `streetNumber`, `postalCode`) VALUES ('StylProd', '1997', 'Amalias', '20', '12345');
@@ -88,3 +88,5 @@ INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('4234567891234',
 INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('2234567891234', '1');
 INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('5234567891234', '4');
 INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('3234567891234', '2');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('6234567891234', '2');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('7234567891234', '2');
