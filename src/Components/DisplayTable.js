@@ -7,6 +7,7 @@ class DisplayTable extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            type : "",
             address: "",
             displayedData: [],
             displayedFields: {},
@@ -18,6 +19,7 @@ class DisplayTable extends Component {
     componentWillReceiveProps(props) {
       console.log(props)
         this.setState({
+            type: props.type,
             address: 'http://localhost:5000/' + props.type,
             displayedData: props.displayedData,
             displayedFields: props.displayedFields,
@@ -50,18 +52,29 @@ class DisplayTable extends Component {
             })
                 .then((response) => {
                   console.log(response);
-                    this.setState({ displayedData: [response.data["orgName"]].concat(response.data["result"]), displayedFields: response.data["names"], prim_key: response.data["prim_key"] });
+                    this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
                     console.log(this.state);
                 });
         }
     }
 
-    // deleteEntry = (i) => {
-    //   axios.delete(this.state.address,
-    //     {
-    //
-    //     })
-//    }
+    deleteEntry = (i) => {
+        console.log(i);
+      axios.delete(this.state.address,
+        {
+            params: i
+        })
+        .then(() => {
+            axios.get(this.state.address, {
+                params: {
+                    query: this.state.query
+                }
+            })
+            .then((response) => {
+                  this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
+              });
+        })
+   }
 
     render() {
         console.log(this.state.displayedData)
@@ -75,7 +88,15 @@ class DisplayTable extends Component {
                 <tbody>
                     {
                         this.state.displayedData.slice(1).map((bookObj, i) =>
-                            (<TableRow key={i} object={bookObj} prim_key={this.state.prim_key}></TableRow>))
+                            (<TableRow key={i} object={bookObj} clickFun={
+                                () => this.deleteEntry(
+                                    this.state.prim_key.map(
+                                        (pkey)=> ({
+                                            [pkey] : bookObj[pkey]
+                                        })
+                                    )
+                                )
+                            } ></TableRow>))
                     }
                 </tbody>
             </table>));
@@ -99,7 +120,7 @@ const TableHead = (props) => {
             {Object.values(props.object).map((domain, i) =>
                 <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]}>{domain}</td>
             )}
-            <td>del</td>
+            <td>   </td>
         </tr>
     )
 }
@@ -114,9 +135,7 @@ const TableRow = (props) => {
                 {Object.values(props.object).map((domain, i) =>
                     <td key={i}>{domain}</td>
                 )}
-                <td><div onClick={deleteEntry(props.prim_key.map((key,i) =>
-                    props.object[key];
-                ))} /></td>
+                <td onClick={props.clickFun} className="delSym">x</td>
             </tr>
         )
     }

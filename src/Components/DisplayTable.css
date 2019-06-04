@@ -1,0 +1,11 @@
+.delSym{
+    background: #7a0000;
+  color: #fff;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 3px;
+}

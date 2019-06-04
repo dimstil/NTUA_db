@@ -4,6 +4,7 @@ import './App.css';
 import Toolbar from './Components/Toolbar/Toolbar'
 import { type } from 'os';
 import GetBook from './Components/GetBook';
+import GetAuthor from './Components/GetAuthor';
 import SideDrawer from './Components/SideDrawer/SideDrawer';
 import Backdrop from './Components/Backdrop/Backdrop';
 import DisplayTable from './Components/DisplayTable';
@@ -26,10 +27,14 @@ class App extends Component {
     });
   };
 
-  setBookType = () => {
+  setType = (type) => {
     this.setState({
       sideDrawerOpen: false,
-      type: "book"
+      type: type,
+      displayedData: [],
+      displayedFields: {},
+      prim_key: {},
+      query: {}
     });
   };
 
@@ -56,22 +61,42 @@ class App extends Component {
     if (this.state.sideDrawerOpen) {
       backdrop = <Backdrop click={this.backdropClickHandler}/>;
     }
+    console.log("displayData:");
+    console.log(this.state.displayedData);
 
-    if (this.state.type === "book"){
-      renderType = <GetBook displayData={this.displayData}/>;
-    } else {
-      renderType = <div />
+    switch(this.state.type){
+      case("homepage"):
+        renderType = <div />;
+        break;
+      case("book"):
+        renderType = <div className="App-Content">
+          <GetBook displayData={this.displayData}/>
+          <DisplayTable type={this.state.type} query={this.state.query} 
+                  displayedData={this.state.displayedData} 
+                  displayedFields={this.state.displayedFields} 
+                  prim_key={this.state.prim_key}/></div>;
+        break; 
+      case("author"):
+        renderType = <div className="App-Content">
+          <GetAuthor displayData={this.displayData}/>
+          <DisplayTable type={this.state.type} query={this.state.query} 
+              displayedData={this.state.displayedData} 
+              displayedFields={this.state.displayedFields} 
+              prim_key={this.state.prim_key}/>
+            </div>
+        break;  
+      default:
+        renderType = <h1>ERROR</h1>;  
     }
 
     return (
       <div className="App">
-		    <Toolbar changeType={this.setBookType} home={this.setHomepageType} drawerClickHandler={this.drawerToggleClickHandler}/>
+		    <Toolbar changeType={this.setType} home={this.setHomepageType} drawerClickHandler={this.drawerToggleClickHandler}/>
         <SideDrawer show={this.state.sideDrawerOpen} />
         {backdrop}
         <main>
           <div className="Content">
             {renderType}
-          <DisplayTable type={this.state.type} query={this.state.query} displayedData={this.state.displayedData} displayedFields={this.state.displayedFields} prim_key={this.state.prim_key}/>
           </div>
         </main>
 

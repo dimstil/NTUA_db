@@ -1,8 +1,8 @@
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('1', 'Manos', 'Gianakakis', '1960-02-13');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('2', 'Sofoklis', 'Tsapas', '1958-11-19');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('3', 'Xristiana', 'Arbeler', '1988-12-21');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('4', 'Marina', 'Karakwstena', '1990-10-17');
-INSERT INTO `librarydb`.`author` (`authID`, `aFirst`, `aLast`, `aBithdate`) VALUES ('5', 'Leonidas', 'Petropoulos', '1982-04-26');
+INSERT INTO `librarydb`.`author` (`ID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('1', 'Manos', 'Gianakakis', '1960-02-13');
+INSERT INTO `librarydb`.`author` (`ID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('2', 'Sofoklis', 'Tsapas', '1958-11-19');
+INSERT INTO `librarydb`.`author` (`ID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('3', 'Xristiana', 'Arbeler', '1988-12-21');
+INSERT INTO `librarydb`.`author` (`ID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('4', 'Marina', 'Karakwstena', '1990-10-17');
+INSERT INTO `librarydb`.`author` (`ID`, `aFirst`, `aLast`, `aBirthdate`) VALUES ('5', 'Leonidas', 'Petropoulos', '1982-04-26');
 
 INSERT INTO `librarydb`.`publisher` (`pubName`, `estYear`, `street`, `streetNumber`, `postalCode`) VALUES ('OfhsProd', '1997', 'Amalias', '18', '12345');
 INSERT INTO `librarydb`.`publisher` (`pubName`, `estYear`, `street`, `streetNumber`, `postalCode`) VALUES ('StylProd', '1997', 'Amalias', '20', '12345');
@@ -16,6 +16,7 @@ INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName
 INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName`) VALUES ('4234567891234', 'D title', '2002', '300', 'StylProd');
 INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName`) VALUES ('5234567891234', 'E title', '2014', '830', 'AraPakisProd');
 INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName`) VALUES ('6234567891234', 'F title', '2010', '400', 'AraPakisProd');
+INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName`) VALUES ('7234567891234', 'G title', '2009', '412', 'AraPakisProd');
 
 INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('1234567891234', 'Drama');
 INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('4234567891234', 'Novel');
@@ -29,18 +30,18 @@ INSERT INTO `librarydb`.`member` (`memberID`, `mFirst`, `mLast`, `street`, `stre
 INSERT INTO `librarydb`.`member` (`memberID`, `mFirst`, `mLast`, `street`, `streetNumber`, `postalCode`, `mBirthdate`) VALUES ('4', 'Giorgos', 'Karapatsias', 'Kastorias', '14', '15968', '1991-06-13');
 INSERT INTO `librarydb`.`member` (`memberID`, `mFirst`, `mLast`, `street`, `streetNumber`, `postalCode`, `mBirthdate`) VALUES ('5', 'Kwstis', 'Paparatsis', 'Psaromaxala', '18', '12336', '1994-09-24');
 
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('1234567891234', '1', 'A123');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('3234567891234', '1', 'A982');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('2234567891234', '1', 'B234');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('4234567891234', '1', 'C150');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('5234567891234', '1', 'D487');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('1234567891234', '2', 'A123');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('3234567891234', '2', 'A982');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('2234567891234', '2', 'B234');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('4234567891234', '2', 'C150');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('5234567891234', '2', 'D487');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('6234567891234', '1', 'E982');
-INSERT INTO `librarydb`.`copies` (`ISBN`, `copyNr`, `shelf`) VALUES ('6234567891234', '2', 'E982');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('1234567891234', 'A123');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('3234567891234', 'A982');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('2234567891234', 'B234');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('4234567891234', 'C150');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('5234567891234', 'D487');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('1234567891234', 'A123');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('3234567891234', 'A982');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('2234567891234', 'B234');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('4234567891234', 'C150');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('5234567891234', 'D487');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('6234567891234', 'E982');
+INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('6234567891234', 'E982');
 
 INSERT INTO `librarydb`.`borrows` (`memberID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('3', '1234567891234', '1', '2019-05-03', '2019-05-10');
 INSERT INTO `librarydb`.`borrows` (`memberID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('2', '3234567891234', '1', '2019-05-07', '2019-05-14');
@@ -82,8 +83,10 @@ INSERT INTO `librarydb`.`reminder` (`empID`, `memberID`, `ISBN`, `copyNr`, `date
 INSERT INTO `librarydb`.`reminder` (`empID`, `memberID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_reminder`) VALUES ('2', '1', '2234567891234', '1', '2019-05-02', '2019-05-09');
 INSERT INTO `librarydb`.`reminder` (`empID`, `memberID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_reminder`) VALUES ('5', '4', '5234567891234', '1', '2019-05-15', '2019-05-22');
 
-INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('1234567891234', '3');
-INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('4234567891234', '5');
-INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('2234567891234', '1');
-INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('5234567891234', '4');
-INSERT INTO `librarydb`.`written_by` (`ISBN`, `authID`) VALUES ('3234567891234', '2');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `ID`) VALUES ('1234567891234', '3');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `ID`) VALUES ('4234567891234', '5');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `ID`) VALUES ('2234567891234', '1');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `ID`) VALUES ('5234567891234', '4');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `ID`) VALUES ('3234567891234', '2');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `ID`) VALUES ('6234567891234', '2');
+INSERT INTO `librarydb`.`written_by` (`ISBN`, `ID`) VALUES ('7234567891234', '2');

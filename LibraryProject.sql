@@ -54,11 +54,11 @@ create table if not exists Book(
 );
 
 create table if not exists author(
-	authID int auto_increment,
+	ID int auto_increment,
     aFirst varchar(60),
     aLast varchar(60),
-    aBithdate date,
-    primary key (authID)
+    aBirthdate date,
+    primary key (ID)
 );
 
 create table if not exists category(
@@ -131,9 +131,9 @@ create table if not exists reminder(
 );
 create table if not exists written_by(
 	ISBN char(13) not null, 
-    authID int not null,
-    primary key(ISBN, authID),
+    ID int not null,
+    primary key(ISBN, ID),
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
-    foreign key(authID) references author(authID) on delete cascade on update cascade
+    foreign key(ID) references author(ID) on delete cascade on update cascade
 );
 

@@ -23,6 +23,10 @@
     text-decoration: none;
     font-size: 1.5rem;
 }
+.toolbar_logo a img{
+    width: 3rem;
+    height: 3rem;
+}
 .spacer{
     flex: 1;
 }
@@ -45,4 +49,6 @@
 .toolbar_navigation-items a:active{
     color: blue;
     text-decoration: none;
+    cursor:'pointer';
+    
 }
