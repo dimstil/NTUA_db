@@ -78,17 +78,15 @@ class GetUser extends Component {
                 postalCode: postalCode,
 				mBirthdate: mBirthdate
 			};
-			for (var x in selquer) {
-				if (selquer[x] === "") {
-					delete selquer[x];
-				}
-			}
+			// for (var x in selquer) {
+			// 	if (selquer[x] === "") {
+			// 		delete selquer[x];
+			// 	}
+			// }
 			axios.post('http://localhost:5000/member', selquer)
 			.then((response) => {
 				this.retrieveData();
-				console.log(response);
-			}).then((body) => {
-				console.log(body);
+				console.log(response.data.errorMsg);
 			});
 		};
 
@@ -105,6 +103,7 @@ class GetUser extends Component {
                     Postal Code: <input type="text" id="sel-postalCode" />
 					Birth Date : <input type="date" id="sel-mBirthdate" />
 					<button onClick={this.getUser}>Get User</button>
+					<button onClick={this.insUpdate} className="formInput">Insert/Update</button>
 				</form>
 			</div>
 		);

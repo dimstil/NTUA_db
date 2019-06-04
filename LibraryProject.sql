@@ -29,7 +29,7 @@ create table if not exists Member(
     postalCode char(5) not null,
     mBirthdate date not null,
     primary key (ID),
-    check (regexp_like(postalcode, '[0-9]+$') and length(postalcode) = 5)
+    check (regexp_like(postalcode, '^[0-9]+$') and length(postalcode) = 5)
     );
 
 create table if not exists publisher(
@@ -39,7 +39,8 @@ create table if not exists publisher(
     streetNumber smallint,
     postalCode char(5),
     primary key (pubName),
-	check (regexp_like(postalcode, '[0-9]+$') and length(postalcode) = 5)
+	check (regexp_like(postalcode, '^[0-9]+$') and length(postalcode) = 5),
+	check (regexp_like(estYear, '^[0-9]+$'))
     );
 
 create table if not exists Book(
@@ -50,7 +51,9 @@ create table if not exists Book(
     pubName varchar(60) not null,
     primary key (ISBN),
 	foreign key(pubName) references publisher(pubName) on delete cascade on update cascade,
-    check (regexp_like(isbn, '[0-9]+$') and length(isbn) = 13)
+    check (regexp_like(isbn, '^[0-9]+$') and length(isbn) = 13),
+	check (regexp_like(pubYear, '^[0-9]+$')),
+	check (regexp_like(numpages, '^[0-9]+$'))
 );
 
 create table if not exists author(
@@ -59,7 +62,7 @@ create table if not exists author(
     aLast varchar(60),
     aBirthdate date,
     primary key (ID)
-);
+    );
 
 create table if not exists category(
 	categoryName varchar(60),

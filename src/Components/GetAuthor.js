@@ -66,19 +66,17 @@ class GetAuthor extends Component {
 				aLast: aLast,
 				aBirthdate: aBirthdate
 			};
-			for (var x in selquer) {
-				if (selquer[x] === "") {
-					delete selquer[x];
-				}
-			}
+			// for (var x in selquer) {
+			// 	if (selquer[x] === "") {
+			// 		delete selquer[x];
+			// 	}
+			// }
 			axios.post('http://localhost:5000/author', selquer)
 				.then((response) => {
 					this.retrieveData();
-					console.log(response);
-				}).then((body) => {
-					console.log(body);
-				});
-		}
+					console.log(response.data.errorMsg);
+		})
+	};
 
 	render() {
 		return (
@@ -90,6 +88,7 @@ class GetAuthor extends Component {
 					Last Name: <input type="text" id="sel-aLast" />
 					Birth Date : <input type="date" id="sel-aBirthdate" />
 					<button onClick={this.getAuthor}>Get Author</button>
+					<button onClick={this.insUpdate} className="formInput">Insert/Update</button>
 				</form>
 			</div>
 		);

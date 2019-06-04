@@ -67,14 +67,13 @@ class GetBook extends Component {
 			numPages: numPage,
 			pubName: pubName
 		};
-		console.log(selquer);
 
-		Object.keys(selquer).forEach((field)=>{
-			if(selquer[field] === null){
-				this.props.error('Important Field is Empty');
-				return;
-			}
-		});
+		// Object.keys(selquer).forEach((field)=>{
+		// 	if(selquer[field] === null){
+		// 		this.props.error('Important Field is Empty');
+		// 		return;
+		// 	}
+		// });
 		//formFields.map((field) => field.value = "");
 
 		// for (var x in selquer) {
@@ -85,10 +84,8 @@ class GetBook extends Component {
 		axios.post('http://localhost:5000/book', selquer)
 			.then((response) => {
 				this.retrieveData();
-				console.log(response);
-			}).then((body) => {
-				console.log(body);
-			});
+				console.log(response.data.errorMsg);
+			})
 	};
 
 	render() {
