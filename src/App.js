@@ -9,7 +9,8 @@ import GetUser from './Components/GetUser';
 import SideDrawer from './Components/SideDrawer/SideDrawer';
 import Backdrop from './Components/Backdrop/Backdrop';
 import DisplayTable from './Components/DisplayTable';
-//import AlertDismissable from './Components/AlertDismissable';
+import AlertDismissable from './Components/AlertDismissable';
+
 class App extends Component {
   constructor() {
     super();
@@ -19,7 +20,8 @@ class App extends Component {
       displayedData: [],
       displayedFields: {},
       prim_key: {},
-      query: {}
+      query: {},
+      errorMsg:""
     };
   }
 
@@ -36,8 +38,22 @@ class App extends Component {
       displayedData: [],
       displayedFields: {},
       prim_key: {},
-      query: {}
+      query: {},
+      errorMsg: this.state.errorMsg
     });
+  };
+
+  setErrorMsg = (e) => {
+    this.setState({
+      sideDrawerOpen: false,
+      type: this.state.type,
+      displayedData: [],
+      displayedFields: {},
+      prim_key: {},
+      query: {},
+      errorMsg: e
+    });
+    console.log(this.state);
   };
 
   setHomepageType = () => {
@@ -65,45 +81,56 @@ class App extends Component {
 
     switch(this.state.type){
       case("homepage"):
-        renderType = <div />;
+        renderType = <div><button onClick={()=>{this.setErrorMsg("error")}} className="TestButton">Click ME!</button></div>;
         break;
       case("book"):
         renderType = <div className="App-Content">
-          <GetBook displayData={this.displayData}/>
+          <GetBook displayData={this.displayData} throwError={this.setErrorMsg}/>
           <DisplayTable type={this.state.type} query={this.state.query} 
                   displayedData={this.state.displayedData} 
                   displayedFields={this.state.displayedFields} 
-                  prim_key={this.state.prim_key}/></div>;
+                  prim_key={this.state.prim_key}
+                  throwError={this.setErrorMsg}/></div>;
         break; 
       case("author"):
         renderType = <div className="App-Content">
-          <GetAuthor displayData={this.displayData}/>
+          <GetAuthor displayData={this.displayData} throwError={this.setErrorMsg}/>
           <DisplayTable type={this.state.type} query={this.state.query} 
               displayedData={this.state.displayedData} 
               displayedFields={this.state.displayedFields} 
-              prim_key={this.state.prim_key}/>
+              prim_key={this.state.prim_key}
+              throwError={this.setErrorMsg}
+              />
             </div>
         break;  
         case("member"):
         renderType = <div className="App-Content">
-          <GetUser displayData={this.displayData}/>
+          <GetUser displayData={this.displayData} throwError={this.setErrorMsg}/>
           <DisplayTable type={this.state.type} query={this.state.query} 
               displayedData={this.state.displayedData} 
               displayedFields={this.state.displayedFields} 
-              prim_key={this.state.prim_key}/>
+              prim_key={this.state.prim_key}
+              throwError={this.setErrorMsg}/>
             </div>
         break; 
       default:
         renderType = <h1>ERROR</h1>;  
     }
-
+    console.log(this.state.errorMsg);
     return (
       <div className="App">
-		    <Toolbar changeType={this.setType} home={this.setHomepageType} drawerClickHandler={this.drawerToggleClickHandler}/>
+        <Toolbar changeType={this.setType} //home={this.setHomepageType} 
+        drawerClickHandler={this.drawerToggleClickHandler}/>
         <SideDrawer show={this.state.sideDrawerOpen} />
         {backdrop}
         <main>
+          
           <div className="Content">
+          <AlertDismissable className="Alert" msg={this.state.errorMsg}
+          style= {{position: "relative", top: "56px", display: "flex",
+          background: "red"  
+        }}
+          handleDism ={() => this.setErrorMsg("")}/>
             {renderType}
           </div>
         </main>

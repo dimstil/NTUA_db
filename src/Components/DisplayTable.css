@@ -16,7 +16,7 @@
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 1rem;
   font-weight: bold;
-  text-align: center;
+  text-align: right;
   width: 1rem;
   height: 1rem;
   border-radius: 3px;
@@ -27,8 +27,31 @@
   font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 1rem;
   font-weight: bold;
-  text-align: center;
+  text-align: left;
   width: 1rem;
   height: 1rem;
   border-radius: 3px;
+}
+
+.Unit-Table{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+.Unit-Table td, .Unit-Table thead {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.Unit-Table tbody tr:nth-child(even){background-color: #f2f2f2;}
+
+.Unit-Table tbody tr:hover {background-color: #ddd;}
+
+.Unit-Table thead {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
 }

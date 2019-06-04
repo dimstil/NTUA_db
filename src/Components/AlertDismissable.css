@@ -1,0 +1,18 @@
+.Alerts {
+    position: relative;
+    top: 56px
+}
+
+.Xclose {
+    position: relative;
+    right:0.1rem;
+    text-align: right;
+}
+.custom-alert {
+    position: relative;
+    top:56px;
+    padding: 1% 1%;
+    margin-bottom: 0.1rem;
+    border: 5px solid ;
+    position: flex;
+}

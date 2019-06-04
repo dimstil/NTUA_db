@@ -108,7 +108,7 @@ class DisplayTable extends Component {
 
     render() {
         const displayType = (this.state.displayedData.length === 1 ? (<p>No results found</p>) :
-            (<table id="books">
+            (<table id="books" className="Unit-Table">
                 <thead>
                     {
                         (<TableHead onClick={this.orderBy} order="" values={Object.values(this.state.displayedFields)} 
@@ -116,7 +116,7 @@ class DisplayTable extends Component {
                         )
                     }
                 </thead>
-                <tbody>
+                <tbody >
                     {
                         this.state.displayedData.slice(1).map((bookObj, i) =>
                             (<TableRow key={i} object={bookObj} clickFun={
@@ -172,10 +172,10 @@ const TableRow = (props) => {
                     <td key={i}>{domain}</td>
                 )}
                 <td onClick={props.clickFun} className="delSym"style={{cursor:'pointer'}}>x</td>
-                {(props.addCopy)?
-                    <td><div onClick={() => {props.manCopy(true)}} className="addSym" style={{cursor:'pointer'}}>+</div>
-                        <div onClick={() => {props.manCopy(false)}} className="redSym" style={{cursor:'pointer'}}>-</div>
-                    </td>:
+                {(props.addCopy)?<div>
+                    <td><div onClick={() => {props.manCopy(true)}} className="addSym" style={{cursor:'pointer'}}>+</div></td>
+                    <td><div onClick={() => {props.manCopy(false)}} className="redSym" style={{cursor:'pointer'}}>-</div>
+                    </td></div>:
                     <></>}
             </tr>
         )
