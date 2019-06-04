@@ -44,20 +44,23 @@ class AlertDismissible extends React.Component {
             padding: '1% 1%',
             marginBottom: '0.1rem',
             border: '2px groove' ,
-            borderColor: "#772929",
-            display: 'flex',
-            background: "#AA3939"}}>
-            <Alert.Heading 
-            >Insert Failed!
-              <div 
-              // style={{
-              //       position: 'relative',
-              //       display:'inline-block',
-              //       right:'0.1rem',      
-              // }} 
-              onClick={handleHide}>x</div>
+            borderColor: "#f5c6cb",
+          //  display: 'flex',
+            background: "#f8d7da",
+            color:'#721c24'}}>
+            <Alert.Heading style={{
+             // position: 'static',
+            //  display:'block',
+              right:'0.1rem'    }}
+            ><strong style={{
+              position: 'relative',
+              left:'0.1rem',
+          //    display:'block',
+              textAlign:'left'    }}> Insert Failed!</strong>
+              <a style={{ textAlign:"right"}}
+              onClick={handleHide}>x</a>
             </Alert.Heading>
-            <p style={{ background: "#AA3939"  }}>
+            <p style={{ background: "#f8d7da"  }}>
                 Fill all necessary fields and try again!
                 {this.props.show}
             </p>
