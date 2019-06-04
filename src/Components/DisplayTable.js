@@ -56,12 +56,13 @@ class DisplayTable extends Component {
         }
     }
 
-    // deleteEntry = (i) => {
-    //   axios.delete(this.state.address,
-    //     {
-    //
-    //     })
-//    }
+    deleteEntry = (i) => {
+        console.log(i);
+      axios.delete(this.state.address,
+        {
+            params: i
+        })
+   }
 
     render() {
         console.log(this.state.displayedData)
@@ -75,7 +76,15 @@ class DisplayTable extends Component {
                 <tbody>
                     {
                         this.state.displayedData.slice(1).map((bookObj, i) =>
-                            (<TableRow key={i} object={bookObj} prim_key={this.state.prim_key}></TableRow>))
+                            (<TableRow key={i} object={bookObj} clickFun={
+                                () => this.deleteEntry(
+                                    this.state.prim_key.map(
+                                        (pkey)=> ({
+                                            [pkey] : bookObj[pkey]
+                                        })
+                                    )
+                                )
+                            } ></TableRow>))
                     }
                 </tbody>
             </table>));
@@ -114,9 +123,7 @@ const TableRow = (props) => {
                 {Object.values(props.object).map((domain, i) =>
                     <td key={i}>{domain}</td>
                 )}
-                <td><div onClick={deleteEntry(props.prim_key.map((key,i) =>
-                    props.object[key];
-                ))} /></td>
+                <td onClick={props.clickFun}></td>
             </tr>
         )
     }
