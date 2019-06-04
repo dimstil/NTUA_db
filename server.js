@@ -91,7 +91,7 @@ app.route('/author')
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
-    var selectQuery = "select authID as \"ID\", aFirst as \"First Name\", aLast as \"Last Name\", aBirthdate as \"Date of Birth\", count(*) from author left join written_by on author.authID=written_by_authID";
+    var selectQuery = "select author.authID as \"ID\", aFirst as \"First Name\", aLast as \"Last Name\", aBirthdate as \"Date of Birth\", count(*) as \"# Written Books\" from author left join written_by on author.authID=written_by.authID";
     const orderBy = qdata["by"];
     delete qdata["by"];
     if (Object.keys(qdata).length !== 0) {
@@ -108,7 +108,7 @@ app.route('/author')
     }
 
     selectQuery += " group by author.authID";
-    if(orderBy !== undefined) selectQuery += ` order by ${orderBy}`;
+    if(orderBy !== undefined) selectQuery += ` order by author.${orderBy}`;
     selectQuery += ';';
 
     console.log(selectQuery);
