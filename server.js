@@ -18,7 +18,8 @@ const con = mysql.createConnection({
   user: "root",
   password: "password",
   database: "librarydb",
-  port: "3306"
+  port: "3306",
+  dateStrings: true
 });
 
 con.connect((err) => {
@@ -36,7 +37,7 @@ app.route('/book')
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
-    var selectQuery = "select book.isbn as \"ISBN\", title as \"Title\", pubYear as \"Published on\", numpages as \"No. of Pages\", pubName as \"Published by\", count(copies.isbn) as \"No. of Copies\" from book left join copies on book.ISBN=copies.ISBN"
+    var selectQuery = "select book.isbn as \"ISBN\", title as \"Title\", pubYear as \"Published on\", numpages as \"No. of Pages\", pubName as \"Published by\", count(copies.isbn) as \"No. of Copies\" from book inner join copies on book.ISBN=copies.ISBN"
     const orderBy = qdata["by"];
     delete qdata["by"];
     if (Object.keys(qdata).length !== 0) {
@@ -79,18 +80,27 @@ app.route('/book')
     });
   })
 
+dateFrontToBack = (input) => {
+  return `${input.substring(6,10)}-${input.substring(0,2)}-${input.substring(3,5)}`
+};
+
+dateBackToFront = (input) => {
+  return `${input.substring(5,7)}/${input.substring(8,10)}/${input.substring(0,4)}`
+};
 
 app.route('/author')
   .post((req, res) => {
     console.log(req.params);
-    con.query(`insert into author(ID, aFirst, aLast, aBithdate) values(\'${req.body.ID}\', \'${req.body.aFirst}\', ${req.body.aLst}, ${req.body.aBirthdate}\');`);
+    req.body.aBirthdate = dateFrontToBack(req.body.aBirthdate);
+
+    con.query(`insert into author(ID, aFirst, aLast, aBithdate) values(\'${req.body.ID}\', \'${req.body.aFirst}\', \'${req.body.aLast}\', \'${req.body.aBirthdate}\');`);
     console.log(req.body);
     res.send({ status: 'succ' });
   })
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
-    var selectQuery = "select author.ID as \"ID\", aFirst as \"First Name\", aLast as \"Last Name\", aBirthdate as \"Date of Birth\", count(*) as \"# Written Books\" from author left join written_by on author.ID=written_by.ID";
+    var selectQuery = "select author.ID as \"ID\", aFirst as \"First Name\", aLast as \"Last Name\", aBirthdate as \"Date of Birth\", count(*) as \"# Written Books\" from author inner join written_by on author.ID=written_by.ID";
     const orderBy = qdata["by"];
     delete qdata["by"];
     if (Object.keys(qdata).length !== 0) {
@@ -120,7 +130,9 @@ app.route('/author')
         namesObj[i] = obj.name;
         orgNamesObj[i] = obj.orgName;
       });
-
+      result.forEach(el=> {
+        el["Date of Birth"] = dateBackToFront(el["Date of Birth"]);
+      });
       res.json({"prim_key":prim_key,"orgName":orgNamesObj,"names":namesObj,"result": result});
     });
   })
@@ -132,3 +144,60 @@ app.route('/author')
       res.json({});
     });
   })
+  
+  app.route('/member')
+    .post((req, res) => {
+      console.log(req.params);
+      req.body.aBirthdate = dateFrontToBack(req.body.aBirthdate);
+  
+      con.query(`insert into member(ID, mFirst, mLast, street, streetNumber, postalCode, mBirthdate) values(\'${req.body.ID}\', \'${req.body.mFirst}\', \'${req.body.mLast}\', \'${street}\', ${streetNumber}, \'${postalCode}\', \'${req.body.aBirthdate}\');`);
+      console.log(req.body);
+      res.send({ status: 'succ' });
+    })
+    .get((req, res) => {
+      var qdata = JSON.parse(req.query.query);
+      console.log(qdata);
+      var selectQuery = "select member.ID as \"ID\", mFirst as \"First Name\", mLast as \"Last Name\", street as \"Street\", streetNumber as \"Street Number\", postalCode as \"Postal Code\", mBirthdate as \"Date of Birth\", count(*) as \"# Written Books\" from member inner join  borrows on member.ID=borrows.ID";
+      const orderBy = qdata["by"];
+      delete qdata["by"];
+      if (Object.keys(qdata).length !== 0) {
+        selectQuery += " where"
+        for (x in qdata) {
+          if (x === "ID" || x === "streetNumber") {
+            selectQuery += ` member.${x} =  ${qdata[x]}  and`;
+          }
+          else {
+            selectQuery += ` member.${x} like '%${qdata[x]}%' and`;
+          }
+        }
+        selectQuery = selectQuery.substring(0, selectQuery.length - 4);
+      }
+  
+      selectQuery += " group by member.ID";
+      if(orderBy !== undefined) selectQuery += ` order by member.${orderBy}`;
+      selectQuery += ';';
+  
+      console.log(selectQuery);
+      con.query(selectQuery, (err, result, fields) => {
+        if (err) throw err;
+        namesObj = {};
+        orgNamesObj = {};
+        prim_key=["ID"];
+        fields.map((obj ,i) => {
+          namesObj[i] = obj.name;
+          orgNamesObj[i] = obj.orgName;
+        });
+        result.forEach(el=> {
+          el["Date of Birth"] = dateBackToFront(el["Date of Birth"]);
+        });
+        res.json({"prim_key":prim_key,"orgName":orgNamesObj,"names":namesObj,"result": result});
+      });
+    })
+    .delete((req, res) => {
+      const query = JSON.parse(req.query[0])
+      const deleteQuery = `delete from member where member.ID = ${query.ID};`
+      con.query(deleteQuery, (err) => {
+        if (err) throw err;
+        res.json({});
+      });
+    })

@@ -21,14 +21,14 @@ drop table if exists temporary_employee;
 drop table if exists employee;
 
 create table if not exists Member(
-    memberID int  auto_increment,
-    mFirst text,
-    mLast text,
-    street text,
-    streetNumber smallint,
-    postalCode char(5),
-    mBirthdate date,
-    primary key (memberID),
+    ID int  auto_increment,
+    mFirst text not null,
+    mLast text not null,
+    street text not null,
+    streetNumber smallint not null,
+    postalCode char(5) not null,
+    mBirthdate date not null,
+    primary key (ID),
     check (regexp_like(postalcode, '[0-9]+$') and length(postalcode) = 5)
     );
 
@@ -97,13 +97,13 @@ create table if not exists temporary_employee(
     foreign key(empID) references employee(empID) on delete cascade on update cascade
     );
 create table if not exists borrows(
-	memberID int not null,
+	ID int not null,
     ISBN char(13) not null,
     copyNr int not null, 
     date_of_borrowing date not null, 
     date_of_return date null,
-    primary key(memberID, ISBN, copyNr, date_of_borrowing),
-    foreign key(memberID) references Member(memberID) on delete cascade on update cascade,
+    primary key(ID, ISBN, copyNr, date_of_borrowing),
+    foreign key(ID) references Member(ID) on delete cascade on update cascade,
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
     foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade on update cascade
 );
@@ -116,17 +116,17 @@ create table if not exists belongs_to(
 );
 create table if not exists reminder(
 	empID int not null,
-    memberID int not null,
+    memID int not null,
     ISBN char(13) not null,
     copyNr int not null,
     date_of_borrowing date not null, 
     date_of_reminder date not null,
-    primary key(empID,memberID,ISBN,copyNr,date_of_borrowing,date_of_reminder),
+    primary key(empID,memID,ISBN,copyNr,date_of_borrowing,date_of_reminder),
     foreign key(empID) references employee(empID) on delete cascade on update cascade,
-    foreign key(memberID) references Member(memberID) on delete cascade on update cascade,
+    foreign key(memID) references Member(ID) on delete cascade on update cascade,
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
-    foreign key(memberID, ISBN, copyNr,date_of_borrowing) references  borrows(
-    memberID, ISBN, copyNr, date_of_borrowing) on delete cascade on update cascade
+    foreign key(memID, ISBN, copyNr,date_of_borrowing) references  borrows(
+    ID, ISBN, copyNr, date_of_borrowing) on delete cascade on update cascade
 
 );
 create table if not exists written_by(

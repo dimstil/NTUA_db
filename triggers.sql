@@ -17,7 +17,7 @@ create trigger borrow_5_books
 before insert on borrows
 for each row
 begin
-if exists (select distinct borrows.memberid 
+if exists (select distinct borrows.id 
 			from borrows 
             where borrows.date_of_return is null 
             having count(*) = 5)
@@ -32,7 +32,7 @@ create trigger cannot_borrow
 before insert on borrows
 for each row
 begin
-if exists (select distinct borrows.memberid 
+if exists (select distinct borrows.id 
 			from borrows 
             where borrows.date_of_return is null and date_add(borrows.date_of_borrowing, interval 30 day) < curdate()
             )

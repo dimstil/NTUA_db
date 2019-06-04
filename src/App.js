@@ -46,7 +46,6 @@ class App extends Component {
   };
 
   displayData = (query, displayedData, displayedFields, prim_key) => {
-    console.log(query, displayedData, displayedFields, prim_key);
     this.setState({query: query, displayedData: displayedData, displayedFields: displayedFields, prim_key: prim_key});
   };
 
@@ -61,8 +60,6 @@ class App extends Component {
     if (this.state.sideDrawerOpen) {
       backdrop = <Backdrop click={this.backdropClickHandler}/>;
     }
-    console.log("displayData:");
-    console.log(this.state.displayedData);
 
     switch(this.state.type){
       case("homepage"):

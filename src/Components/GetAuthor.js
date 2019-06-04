@@ -47,8 +47,6 @@ class GetAuthor extends Component {
 				}
 			})
 				.then((response) => {
-					console.log("response");
-					console.log(response.data);
 					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
 				});
 		};

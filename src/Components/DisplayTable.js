@@ -17,7 +17,6 @@ class DisplayTable extends Component {
     }
 
     componentWillReceiveProps(props) {
-      console.log(props)
         this.setState({
             type: props.type,
             address: 'http://localhost:5000/' + props.type,
@@ -51,15 +50,12 @@ class DisplayTable extends Component {
                 }
             })
                 .then((response) => {
-                  console.log(response);
                     this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
-                    console.log(this.state);
                 });
         }
     }
 
     deleteEntry = (i) => {
-        console.log(i);
       axios.delete(this.state.address,
         {
             params: i
@@ -77,7 +73,6 @@ class DisplayTable extends Component {
    }
 
     render() {
-        console.log(this.state.displayedData)
         const displayType = (this.state.displayedData.length === 1 ? (<p>No results found</p>) :
             (<table id="books">
                 <thead>
@@ -100,7 +95,6 @@ class DisplayTable extends Component {
                     }
                 </tbody>
             </table>));
-            console.log(this.state.displayedFields);
         return (
             <div className="display">
                 {displayType}
@@ -111,8 +105,6 @@ class DisplayTable extends Component {
 }
 
 const TableHead = (props) => {
-    console.log(props.values);
-    console.log(props.object);
     if (props.object !== undefined) {
     return (
         <tr>
@@ -128,7 +120,6 @@ return null;
 }
 
 const TableRow = (props) => {
-    console.log(props.object);
     if (props.object !== undefined) {
         return (
             <tr>
