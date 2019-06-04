@@ -71,5 +71,11 @@ app.route('/book')
     });
   })
   .delete((req, res) => {
-    console.log(req.query); 
+    const query = JSON.parse(req.query[0])
+    console.log(query.ISBN)
+    const deleteQuery = `delete from book where book.isbn = ${query.ISBN};`
+    con.query(deleteQuery, (err) => {
+      if (err) throw err;
+      res.json({});
+    });
   })

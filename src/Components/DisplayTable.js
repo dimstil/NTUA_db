@@ -62,6 +62,16 @@ class DisplayTable extends Component {
         {
             params: i
         })
+        .then(() => {
+            axios.get(this.state.address, {
+                params: {
+                    query: this.state.query
+                }
+            })
+            .then((response) => {
+                  this.setState({ displayedData: [response.data["orgName"]].concat(response.data["result"]), displayedFields: response.data["names"], prim_key: response.data["prim_key"] });
+              });
+        })
    }
 
     render() {
