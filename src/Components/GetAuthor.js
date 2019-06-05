@@ -50,6 +50,9 @@ class GetAuthor extends Component {
 				}
 			})
 				.then((response) => {
+					if (response.data.errorMsg) {
+						this.props.throwError(response.data.errorMsg);
+					} else
 					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
 				});
 		};
@@ -73,8 +76,11 @@ class GetAuthor extends Component {
 			// }
 			axios.post('http://localhost:5000/author', selquer)
 				.then((response) => {
+					if (response.data.errorMsg) {
+						this.props.throwError(response.data.errorMsg);
+					} 
 					this.retrieveData();
-					console.log(response.data.errorMsg);
+					
 		})
 	};
 
@@ -83,12 +89,12 @@ class GetAuthor extends Component {
 			<div className="GetAuthor">
 				<h2>Author Info</h2>
 				<form>
-					Author ID: <input type="text" id="sel-authID" />
-					First Name: <input type="text" id="sel-aFirst" />
-					Last Name: <input type="text" id="sel-aLast" />
-					Birth Date : <input type="date" id="sel-aBirthdate" />
+					Author ID: <input type="text" id="sel-authID" /><br/>
+					First Name: <input type="text" id="sel-aFirst" /><br/>
+					Last Name: <input type="text" id="sel-aLast" /><br/>
+					Birth Date : <input type="date" id="sel-aBirthdate" /><br/>
 					<button onClick={this.getAuthor}>Get Author</button>
-					<button onClick={this.insUpdate} className="formInput">Insert/Update</button>
+					<button onClick={this.insUpdate} className="formInput">Insert Author</button>
 				</form>
 			</div>
 		);

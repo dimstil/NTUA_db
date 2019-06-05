@@ -1,5 +1,4 @@
 import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
 import React from 'react';
 
 class AlertDismissible extends React.Component {
@@ -40,29 +39,34 @@ class AlertDismissible extends React.Component {
         //   style={{ background: "#AA3939",  position: "relative", top: "56px", display: "flex",
         //  outlineColor:"#9A2929", outlineWidth: "thick"}}
           style={{    position: 'relative',
-            top:'56px',
+            top:'66px',
+            left: '2%',
+            width: '94%',
             padding: '1% 1%',
             marginBottom: '0.1rem',
             border: '2px groove' ,
             borderColor: "#f5c6cb",
-          //  display: 'flex',
             background: "#f8d7da",
-            color:'#721c24'}}>
+            color:'#721c24',
+            }}>
+           
             <Alert.Heading style={{
              // position: 'static',
-            //  display:'block',
+              display:'inline-block',
               right:'0.1rem'    }}
-            ><strong style={{
-              position: 'relative',
+            >
+              <strong style={{
+              position: 'static',
               left:'0.1rem',
-          //    display:'block',
-              textAlign:'left'    }}> Insert Failed!</strong>
-              <a style={{ textAlign:"right"}}
-              onClick={handleHide}>x</a>
+              display:'inline',
+              textAlign:'left'    }}> ERROR !</strong>
             </Alert.Heading>
+            <a style={{ position: 'relative' ,left: '45%',textAlign:"right", cursor:'pointer', display:'inline-block'}}
+              onClick={handleHide}
+              ><strong>x</strong></a>
+
             <p style={{ background: "#f8d7da"  }}>
-                Fill all necessary fields and try again!
-                {this.props.show}
+                  {this.state.errorMsg}
             </p>
 
           </Alert>

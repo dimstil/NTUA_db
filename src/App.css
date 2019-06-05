@@ -19,7 +19,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+main{
+  margin-top: 56px;
+}
 .App-link {
   color: #61dafb;
 }
