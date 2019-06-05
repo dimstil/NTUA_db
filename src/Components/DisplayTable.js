@@ -155,7 +155,8 @@ class DisplayTable extends Component {
                                 }
                                 prim_keys={this.state.prim_key}
                                 errorHandle={this.props.throwError}
-                                update={this.updateFields}
+                                address={this.state.address}
+                                refr={()=>refresh(this.props)}
                                 >
                             </TableRow>))
                     }
@@ -200,20 +201,30 @@ class TableRow extends Component {
             key: {},
             fields: {}
         }
-        console.log(this.props.object)
         for(var key in this.props.prim_keys){
             to_update.key[this.props.prim_keys[key]] = this.props.object[this.props.prim_keys[key]];    
         }
         var elements = [...document.getElementsByClassName("Upd"+this.props.rowNo)];
         
        for(var it = 0; it< elements.length; it++ ){
-            console.log(
-            document.querySelector("#h"+elements[it].id));
+
             var field= document.querySelector("#h"+elements[it].id);
-            console.log(field);
+
             to_update.fields[field.getAttribute('value')] = elements[it].value;
-            console.log(to_update);
        }
+
+       axios.put(this.props,to_update).then((response)=>{
+        if (response.data.errorMsg) {
+            this.props.errorHandle(response.data.errorMsg);
+            this.setState({
+                updateMode:[]
+            })
+        } else {
+                this.props.refr();
+               }
+        }
+    )
+
         
     }
     doubleClickHandle(i,obj) {
