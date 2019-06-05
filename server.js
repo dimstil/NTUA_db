@@ -422,7 +422,8 @@ app.route('/bookCopy')
 
 app.route('/query')
   .get((req, res) => {
-    const queryNum = req.query
+    console.log(req.query.num);
+    const queryNum = req.query.num
     let query = "";
     switch (queryNum) {
       case 1:

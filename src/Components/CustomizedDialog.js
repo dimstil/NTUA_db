@@ -58,10 +58,19 @@ class CustomizedDialogs extends React.Component {
             type: props.type
         };
     }
+
+    componentDidMount(){
+        this.setState ({
+            open:false,
+            type: 0
+        })
+    }
     componentDidUpdate(prevProps) {
+        console.log("didUpdate");
+        console.log(this.props);
         if(prevProps!==this.props){
             this.setState({
-                open : (this.props.type!==0),
+                open :  (this.props.type!==0),
                 type : this.props.type
             })
         }
@@ -84,8 +93,13 @@ class CustomizedDialogs extends React.Component {
 
   render() {
      var to_show;
-     if(this.state.type!==0)
-        axios.get("http://localhost:5000/query",{num:this.state.type} )
+     console.log(this.state)
+     if(this.state.open)
+        axios.get("http://localhost:5000/query",{
+            params:{
+                num : this.state.type
+                } 
+            })
             .then ((response) => {
                 if(response.data.errorMsg)
                     this.props.throwError(response.data.errorMsg);
@@ -118,7 +132,7 @@ class CustomizedDialogs extends React.Component {
           open={this.state.open}
         >
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
-            {() => {
+            {(() => {
                 switch(this.state.type){
                     case(1):
                         return <h6>Number of Members</h6>;
@@ -127,7 +141,7 @@ class CustomizedDialogs extends React.Component {
                     default:
                         return <h6>SUCKAh</h6>;
                 }
-                }
+                })()
             }
 
           </DialogTitle>
