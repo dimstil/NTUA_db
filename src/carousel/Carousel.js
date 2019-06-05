@@ -23,9 +23,9 @@ class Carousel extends Component {
     }
     
     currentSlide(n) {
-      this.showSlides(this.setState({
+     this.setState({
           slideIndex : n
-      } ));
+      } );
     }
     
 

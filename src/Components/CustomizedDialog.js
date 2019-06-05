@@ -29,9 +29,10 @@ const DialogTitle = withStyles(styles)(props => {
     <MuiDialogTitle disableTypography className={classes.root}>
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
-        </IconButton>
+        // <IconButton aria-label="Close" className={classes.closeButton} onClick={onClose}>
+        //   <CloseIcon />
+        // </IconButton>
+        <></>
       ) : null}
     </MuiDialogTitle>
   );
@@ -179,7 +180,7 @@ class CustomizedDialogs extends React.Component {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleClose} color="primary">
-              Again
+              <b style={{color:"#4CAF50"}}>Close</b>
             </Button>
           </DialogActions>
         </Dialog>

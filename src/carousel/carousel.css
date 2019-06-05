@@ -15,7 +15,7 @@ img {vertical-align: top;}
 
   cursor: pointer;
   position: fixed;
-  z-index:-1;
+  z-index:3;
   top: 60%;
   left: 0%;
   width: auto;
@@ -32,7 +32,7 @@ img {vertical-align: top;}
 }
 .next {
   cursor: pointer;
-  z-index:-1;
+  z-index:3;
   position: fixed;
   top: 60%;
   width: auto;

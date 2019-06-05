@@ -30,10 +30,8 @@ class GetEmployee extends Component {
 
 	getEmployee = (e) => {
 			e.preventDefault();
-			const formFields = [document.querySelector('#sel-memberID'), document.querySelector('#sel-mFirst'),
-                document.querySelector('#sel-mLast'),document.querySelector('#sel-street'), 
-                document.querySelector('#sel-streetNumber'), document.querySelector('#sel-postalCode'), 
-                document.querySelector('#sel-mBirthdate')];
+			const formFields = [document.querySelector('#sel-eFirst'),
+                document.querySelector('#sel-eLast')];
 			const [ID, mFirst, mLast, street, streetNumber,postalCode, mBirthdate] = formFields.map((field) => field.value);
 			formFields.map((field) => field.value = "");
 			var selquer = {
@@ -96,7 +94,7 @@ class GetEmployee extends Component {
 				<form>
 					First Name: <input type="text" id="sel-eFirst" placeholder="e.g Babis"/><br/>
 					Last Name: <input type="text" id="sel-eLast" placeholder = "e.g Xaralabidis"/><br/>
-					<button onClick={this.getEmployee}>Get User</button>
+					<button onClick={this.getEmployee}>Get Employee</button>
 					<button onClick={this.insert} className="formInput">Insert Employee</button>
 				</form>
 			</div>

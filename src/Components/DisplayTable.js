@@ -75,20 +75,24 @@ class DisplayTable extends Component {
                 if (response.data.errorMsg) {
                     this.props.throwError(response.data.errorMsg);
                 } else {
-                    axios.get(this.state.address, {
-                        params: {
-                            query: this.state.query
-                        }
-                    })
-                        .then((response) => {
-                            if (response.data.errorMsg) {
-                                this.props.throwError(response.data.errorMsg);
-                            } else {
-                                this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
-                            }
-                        });
+                    this.getEverything();   
                 }
             })
+    }
+
+    getEverything = () => {
+        axios.get(this.state.address, {
+            params: {
+                query: this.state.query
+            }
+        })
+            .then((response) => {
+                if (response.data.errorMsg) {
+                    this.props.throwError(response.data.errorMsg);
+                } else {
+                    this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
+                }
+            });
     }
 
     bookCopy = (i, flag) => {
@@ -158,7 +162,7 @@ class DisplayTable extends Component {
                                 prim_keys={this.state.prim_key}
                                 errorHandle={this.props.throwError}
                                 address={this.state.address}
-                                refr={() => this.refresh(this.props)}
+                                refr={() => this.getEverything}
                             >
                             </TableRow>))
                     }
@@ -227,6 +231,9 @@ class TableRow extends Component {
                     })
                 } else {
                     this.props.refr();
+                    this.setState({
+                        updateMode: []
+                    })
                 }
             })
         }
@@ -277,12 +284,12 @@ class TableRow extends Component {
                     {(this.props.addCopy) ? <td>
 
                         <i onClick={() => { this.props.manCopy(true) }} 
-                             className="addSym">+
+                             className="addSym" style={{ cursor: 'pointer' }}>+
                             </i> 
-                        <i onClick={() => { this.props.manCopy(false) }} className="redSym" style={{ cursor: 'pointer' }}>)-</i> </td>
+                        <i onClick={() => { this.props.manCopy(false) }} className="redSym" style={{ cursor: 'pointer' }}>-</i> </td>
                         :   <></>}
                           {(this.state.updateMode === []) ? <></> :
-                        <td style={{}}>  <button onClick={() => this.updateRow()} class>Update</button> </td>}
+                        <td style={{}}>  <button onClick={() => this.updateRow()}>Update</button> </td>}
                 </tr>
             );
         }
