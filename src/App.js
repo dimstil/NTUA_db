@@ -10,7 +10,10 @@ import SideDrawer from './Components/SideDrawer/SideDrawer';
 import Backdrop from './Components/Backdrop/Backdrop';
 import DisplayTable from './Components/DisplayTable';
 import AlertDismissable from './Components/AlertDismissable';
+import Carousel from './carousel/Carousel';
 import './Components/Form.css'
+import FullScreenDialog from './Components/FullScreenDialog'
+import CustomizedDialogs from './Components/CustomizedDialog';
 
 class App extends Component {
   constructor() {
@@ -82,7 +85,7 @@ class App extends Component {
 
     switch(this.state.type){
       case("homepage"):
-        renderType = <div><button onClick={()=>{this.setErrorMsg("error")}} className="TestButton">Click ME!</button></div>;
+        renderType = <div><Carousel/></div>;
         break;
       case("book"):
         renderType = <div className="App-Content">
@@ -114,6 +117,7 @@ class App extends Component {
               throwError={this.setErrorMsg}/>
             </div>
         break; 
+     
       default:
         renderType = <h1>ERROR</h1>;  
     }
@@ -123,7 +127,7 @@ class App extends Component {
         <Toolbar changeType={this.setType} //home={this.setHomepageType} 
         drawerClickHandler={this.drawerToggleClickHandler}
         style={{zIndex:"600"}}/>
-        <SideDrawer show={this.state.sideDrawerOpen} />
+        <SideDrawer changeType={this.setType} show={this.state.sideDrawerOpen} throwError={this.setErrorMsg}/>
         {backdrop}
         <main>
           

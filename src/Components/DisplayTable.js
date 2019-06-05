@@ -214,7 +214,7 @@ class TableRow extends Component {
             to_update.fields[field.getAttribute('value')] = elements[it].value;
        }
 
-       axios.put(this.props,to_update).then((response)=>{
+       axios.put(this.props.address,to_update).then((response)=>{
         if (response.data.errorMsg) {
             this.props.errorHandle(response.data.errorMsg);
             this.setState({
@@ -222,9 +222,12 @@ class TableRow extends Component {
             })
         } else {
                 this.props.refr();
-               }
+                this.setState({
+                    updateMode: []
+               })
+            }
         }
-    )
+    );
 
         
     }
@@ -264,10 +267,10 @@ class TableRow extends Component {
   
                             (this.state.updateMode.indexOf(i)!==-1)?<input type="text" className={"Upd"+this.props.rowNo}
                             id={i} 
-                            value={domain}/>:domain
+                            defaultValue={domain}/>:domain
                         }</td>
                     )}
-                    <td onClick={this.props.clickFun} className="delSym"style={{cursor:'pointer'}}>x</td>
+                    <td><a onClick={this.props.clickFun} className="delSym"style={{cursor:'pointer'}}>x</a></td>
                     {(this.props.addCopy)?<td>
                         <td><div onClick={() => {this.props.manCopy(true)}} className="addSym" style={{cursor:'pointer'}}>+</div></td>
                         <td><div onClick={() => {this.props.manCopy(false)}} className="redSym" style={{cursor:'pointer'}}>-</div>
