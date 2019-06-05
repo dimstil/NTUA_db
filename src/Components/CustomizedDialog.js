@@ -164,6 +164,8 @@ class CustomizedDialogs extends React.Component {
                         return <>ISBN,title,category with a null field</>;
                     case(7):
                         return <>Authors of Books</>;
+                    case(8):
+                        return <>Members with owed books</>
                     default:
                         return <>SUCKAh</>;
                 }
