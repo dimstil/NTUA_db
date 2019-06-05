@@ -47,10 +47,10 @@ class App extends Component {
     this.setState({
       sideDrawerOpen: false,
       type: this.state.type,
-      displayedData: [],
-      displayedFields: {},
-      prim_key: {},
-      query: {},
+      displayedData: this.state.displayedData,
+      displayedFields: this.state.displayedFields,
+      prim_key: this.state.prim_key,
+      query: this.state.query,
       errorMsg: e
     });
     console.log(this.state);

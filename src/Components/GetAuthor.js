@@ -50,6 +50,9 @@ class GetAuthor extends Component {
 				}
 			})
 				.then((response) => {
+					if (response.data.errorMsg) {
+						this.props.throwError(response.data.errorMsg);
+					} else
 					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
 				});
 		};
@@ -73,8 +76,11 @@ class GetAuthor extends Component {
 			// }
 			axios.post('http://localhost:5000/author', selquer)
 				.then((response) => {
+					if (response.data.errorMsg) {
+						this.props.throwError(response.data.errorMsg);
+					} 
 					this.retrieveData();
-					console.log(response.data.errorMsg);
+					
 		})
 	};
 

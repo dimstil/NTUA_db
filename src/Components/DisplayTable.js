@@ -12,11 +12,16 @@ class DisplayTable extends Component {
             displayedData: [],
             displayedFields: {},
             query: {},
-            prim_key: {}
+            prim_key: {},
+            
         };
     }
 
     componentWillReceiveProps(props) {
+        this.refresh(props);
+    }
+
+    refresh(props){
         this.setState({
             type: props.type,
             address: 'http://localhost:5000/' + props.type,
@@ -50,7 +55,11 @@ class DisplayTable extends Component {
                 }
             })
                 .then((response) => {
-                    this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
+                    if (response.data.errorMsg) {
+                        this.props.throwError(response.data.errorMsg);
+                    } else {
+                        this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
+                    }
                 });
         }
     }
@@ -60,15 +69,23 @@ class DisplayTable extends Component {
         {
             params: i
         })
-        .then(() => {
+        .then((response) => {
+            if (response.data.errorMsg) {
+                this.props.throwError(response.data.errorMsg);
+            } else {
             axios.get(this.state.address, {
                 params: {
                     query: this.state.query
                 }
             })
             .then((response) => {
-                  this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
-              });
+                if (response.data.errorMsg) {
+					this.props.throwError(response.data.errorMsg);
+				} else {
+                    this.setState({ displayedData: [response.data["names"]].concat(response.data["result"]), displayedFields: response.data["orgName"], prim_key: response.data["prim_key"] });
+                }
+                });
+            }
         })
    }
 
@@ -119,7 +136,7 @@ class DisplayTable extends Component {
                 <tbody >
                     {
                         this.state.displayedData.slice(1).map((bookObj, i) =>
-                            (<TableRow key={i} object={bookObj} clickFun={
+                            (<TableRow key={i} object={bookObj} rowNo={i}clickFun={
                                 () => this.deleteEntry(
                                     this.state.prim_key.map(
                                         (pkey)=> ({
@@ -135,7 +152,11 @@ class DisplayTable extends Component {
                                             [pkey] : bookObj[pkey]
                                         }))
                                         ,flag)
-                                }>
+                                }
+                                prim_keys={this.state.prim_key}
+                                errorHandle={this.props.throwError}
+                                update={this.updateFields}
+                                >
                             </TableRow>))
                     }
                 </tbody>
@@ -155,7 +176,8 @@ const TableHead = (props) => {
         <tr>
 
             {Object.values(props.object).map((domain, i) =>
-                <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]} style={{cursor: 'pointer'}}>{domain}</td>
+                <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]}
+                id={"h"+i} style={{cursor: 'pointer'}}>{domain}</td>
             )}
             <td>   </td>
             {(props.addCopy)?<td>Copies</td>:<></>}
@@ -165,23 +187,86 @@ const TableHead = (props) => {
 return null;
 }
 
-const TableRow = (props) => {
-    if (props.object !== undefined) {
-        return (
-            <tr>
-                {Object.values(props.object).map((domain, i) =>
-                    <td key={i}>{domain}</td>
-                )}
-                <td onClick={props.clickFun} className="delSym"style={{cursor:'pointer'}}>x</td>
-                {(props.addCopy)?<div>
-                    <td><div onClick={() => {props.manCopy(true)}} className="addSym" style={{cursor:'pointer'}}>+</div></td>
-                    <td><div onClick={() => {props.manCopy(false)}} className="redSym" style={{cursor:'pointer'}}>-</div>
-                    </td></div>:
-                    <></>}
-            </tr>
-        )
+class TableRow extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            updateMode : []
+        }
     }
-    return null;
+    
+    updateRow(){
+        var to_update={
+            key: {},
+            fields: {}
+        }
+        console.log(this.props.object)
+        for(var key in this.props.prim_keys){
+            to_update.key[this.props.prim_keys[key]] = this.props.object[this.props.prim_keys[key]];    
+        }
+        var elements = [...document.getElementsByClassName("Upd"+this.props.rowNo)];
+        
+       for(var it = 0; it< elements.length; it++ ){
+            console.log(
+            document.querySelector("#h"+elements[it].id));
+            var field= document.querySelector("#h"+elements[it].id);
+            console.log(field);
+            to_update.fields[field.getAttribute('value')] = elements[it].value;
+            console.log(to_update);
+       }
+        
+    }
+    doubleClickHandle(i,obj) {
+        console.log(i+"-"+this.props.object+"-"+this.props.prim_keys);
+        for(var key in this.props.prim_keys){
+            console.log(key,this.props.object[this.props.prim_keys[key]]);
+            if(obj===this.props.object[this.props.prim_keys[key]]){
+                this.props.errorHandle("Cannot update primary key "+this.props.prim_key);
+                return;
+            }
+        }
+
+
+        var ind = this.state.updateMode.indexOf(i);
+        if(ind===-1){
+            this.state.updateMode.push(i);
+            this.setState({
+                updateMode: this.state.updateMode
+        });}
+        else {
+            console.log("remove");
+            this.state.updateMode.splice(ind,1)
+            this.setState({
+                updateMode: this.state.updateMode
+            })
+        }
+        console.log(i);
+    }
+
+    render(){
+        if (this.props.object !== undefined) {
+            return (
+                <tr>
+                    {Object.values(this.props.object).map((domain, i) =>
+                        <td key={i} onDoubleClick={() => this.doubleClickHandle(i,domain)} >{
+  
+                            (this.state.updateMode.indexOf(i)!==-1)?<input type="text" className={"Upd"+this.props.rowNo}
+                            id={i} 
+                            placeholder="`${i}`"/>:domain
+                        }</td>
+                    )}
+                    <td onClick={this.props.clickFun} className="delSym"style={{cursor:'pointer'}}>x</td>
+                    {(this.props.addCopy)?<div>
+                        <td><div onClick={() => {this.props.manCopy(true)}} className="addSym" style={{cursor:'pointer'}}>+</div></td>
+                        <td><div onClick={() => {this.props.manCopy(false)}} className="redSym" style={{cursor:'pointer'}}>-</div>
+                        </td></div>:
+                        <></>}
+                    {(this.state.updateMode===[])?<></>:
+                    <td><button onClick={()=> this.updateRow()}>Update</button></td> }   
+                </tr>
+            );
+        }
+    }
 }
 
 export default DisplayTable;

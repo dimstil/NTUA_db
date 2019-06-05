@@ -55,9 +55,11 @@ class GetUser extends Component {
 				}
 			})
 				.then((response) => {
-					console.log("response");
-					console.log(response.data);
+					if (response.data.errorMsg) {
+						this.props.throwError(response.data.errorMsg);
+					} else
 					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
+				
 				});
 		};
 
@@ -85,6 +87,9 @@ class GetUser extends Component {
 			// }
 			axios.post('http://localhost:5000/member', selquer)
 			.then((response) => {
+				if (response.data.errorMsg) {
+					this.props.throwError(response.data.errorMsg);
+				} 
 				this.retrieveData();
 				console.log(response.data.errorMsg);
 			});
@@ -95,12 +100,12 @@ class GetUser extends Component {
 			<div className="GetUser">
 				<h2>User Info</h2>
 				<form>
-					User ID: <input type="text" id="sel-memberID" />
-					First Name: <input type="text" id="sel-mFirst" />
-					Last Name: <input type="text" id="sel-mLast" />
-                    Street: <input type="text" id="sel-street" />
+					User ID: <input type="text" id="sel-memberID" placeholder="Number"/>
+					First Name: <input type="text" id="sel-mFirst" placeholder="e.g Babis"/>
+					Last Name: <input type="text" id="sel-mLast" placeholder = "e.g Xaralabidis"/>
+                    Street: <input type="text" id="sel-street" placeholder = "e.g Hroon Politexneiou" />
                     Street No.: <input type="text" id="sel-streetNumber" />
-                    Postal Code: <input type="text" id="sel-postalCode" />
+                    Postal Code: <input type="text" id="sel-postalCode" placeholder="5 digit number"/>
 					Birth Date : <input type="date" id="sel-mBirthdate" />
 					<button onClick={this.getUser}>Get User</button>
 					<button onClick={this.insUpdate} className="formInput">Insert/Update</button>
