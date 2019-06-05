@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './DisplayTable.css';
 import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
-import Icon from '@material-ui/core/Icon';
-import { makeStyles } from '@material-ui/core/styles';
 
 import { type } from 'os';
 

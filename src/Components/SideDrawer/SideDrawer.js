@@ -40,6 +40,7 @@ class sideDrawer extends Component  {
                 <li><button onClick ={() => this.changeType(5)}>Query 5</button></li>
                 <li><button onClick ={() => this.changeType(6)}>Query 6</button></li>
                 <li><button onClick ={() => this.changeType(7)}>Query 7</button></li>
+                <li><button onClick ={() => this.changeType(8)}>View</button></li>
 
                 </ul>
             </nav>
