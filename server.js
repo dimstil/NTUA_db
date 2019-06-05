@@ -461,6 +461,9 @@ app.route('/query')
       case 7:
         query = `select book.isbn as \'ISBN\', book.title  as \'Title\', author.aFirst  as \'First Name\', author.aLast  as \'Last Name\' from book left join written_by on book.isbn = written_by.isbn inner join author on written_by.ID = author.ID;`;
         break;
+      case 8:
+        query = `select * from to_remind`;
+        break;
     }
     con.query(query, (err, result, fields) => {
       namesObj = {};
