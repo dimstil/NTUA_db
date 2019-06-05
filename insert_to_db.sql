@@ -47,6 +47,7 @@ INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('5234567891234', 'D48
 INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('6234567891234', 'E982');
 INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('6234567891234', 'E982');
 
+
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('1', '2234567891234', '1', '2019-05-02', '2019-05-09');
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('2', '3234567891234', '1', '2019-05-07', '2019-05-14');
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('3', '1234567891234', '1', '2019-05-03', '2019-05-10');
