@@ -73,8 +73,8 @@ create table if not exists category(
 
 create table if not exists copies(
 	ISBN char(13) not null, 
-    copyNr int not null,
-    shelf  varchar(20),
+    copyNr int default 1,
+    shelf  varchar(20) default 'A800',
     primary key(ISBN,copyNr),
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade
 );

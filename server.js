@@ -27,6 +27,14 @@ con.connect((err) => {
   console.log("Connected!");
 });
 
+dateFrontToBack = (input) => {
+  return `${input.substring(6, 10)}-${input.substring(0, 2)}-${input.substring(3, 5)}`
+};
+
+dateBackToFront = (input) => {
+  return `${input.substring(5, 7)}/${input.substring(8, 10)}/${input.substring(0, 4)}`
+};
+
 app.route('/book')
   .post((req, res) => {
     con.query(`insert into book(isbn, title, pubYear, numpages, pubName) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`, (err) => {
@@ -58,9 +66,14 @@ app.route('/book')
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
-    var selectQuery = "select book.isbn as \"ISBN\", title as \"Title\", pubYear as \"Published on\", numpages as \"No. of Pages\", pubName as \"Published by\", count(copies.isbn) as \"No. of Copies\" from book inner join copies on book.ISBN=copies.ISBN"
+    var selectQuery = "select book.isbn as \"ISBN\", title as \"Title\", pubYear as \"Published on\", numpages as \"No. of Pages\", pubName as \"Published by\", count(copies.isbn) as \"No. of Copies\" from book left join copies on book.ISBN=copies.ISBN"
+    
     const orderBy = qdata["by"];
     delete qdata["by"];
+    
+    const atLeastPages = qdata["numPages"];
+    delete qdata["numPages"];
+    
     if (Object.keys(qdata).length !== 0) {
       selectQuery += " where"
       for (x in qdata) {
@@ -75,6 +88,7 @@ app.route('/book')
     }
 
     selectQuery += " group by book.ISBN";
+    if (atLeastPages !== undefined) selectQuery += ` having book.numPages >= ${atLeastPages}`;
     if (orderBy !== undefined) selectQuery += ` order by ${orderBy}`;
     selectQuery += ';';
 
@@ -111,18 +125,34 @@ app.route('/book')
       res.json({});
     });
   })
+  .put((req, res) => {
+    var qdata = JSON.parse(req.query.query);
+    var selectQuery = `update book set ${Object.keys(qdata).map(field => `book.${field} = ${qdata[field]}`).join(',')} where book.isbn=${qdata.prim_key};`;
 
-dateFrontToBack = (input) => {
-  return `${input.substring(6, 10)}-${input.substring(0, 2)}-${input.substring(3, 5)}`
-};
+    console.log(selectQuery);
+    con.query(selectQuery, (err) => {
+      if (err) {
+        switch(err.errno) {
+          case 1054:
+            res.json({errorMsg: "Invalid input field! Please check input format."});
+        break;
+        case 1062:
+          res.json({errorMsg: "Book already exists!."});
+          break;
+        default:
+          res.json({errorMsg: "Error on select. Please try again."});
+          break;
+        }
+      }
+      else {
+      res.json({});
+      }
+    });
+  });
 
-dateBackToFront = (input) => {
-  return `${input.substring(5, 7)}/${input.substring(8, 10)}/${input.substring(0, 4)}`
-};
 
 app.route('/author')
 .post((req, res) => {
-  
   req.body.aBirthdate === '' ? '' : dateFrontToBack(req.body.aBirthdate);
   con.query(`insert into author(ID, aFirst, aLast, aBirthdate) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`, (err) => {
     if(err) {
@@ -207,6 +237,30 @@ app.route('/author')
       res.json({});
     });
   })
+  .put((req, res) => {
+    var qdata = JSON.parse(req.query.query);
+    var selectQuery = `update author set ${Object.keys(qdata).map(field => `author.${field} = ${qdata[field]}`).join(',')} where author.ID=${qdata.prim_key};`;
+
+    console.log(selectQuery);
+    con.query(selectQuery, (err) => {
+      if (err) {
+        switch(err.errno) {
+          case 1054:
+            res.json({errorMsg: "Invalid input field! Please check input format."});
+        break;
+        case 1062:
+          res.json({errorMsg: "Author already exists!."});
+          break;
+        default:
+          res.json({errorMsg: "Error on select. Please try again."});
+          break;
+        }
+      }
+      else {
+      res.json({});
+      }
+    });
+  });
 
 app.route('/member')
   .post((req, res) => {
@@ -298,5 +352,46 @@ app.route('/member')
     con.query(deleteQuery, (err) => {
       if (err) throw err;
       res.json({});
+    });
+  })
+  .put((req, res) => {
+    var qdata = JSON.parse(req.query.query);
+    var selectQuery = `update member set ${Object.keys(qdata).map(field => `member.${field} = ${qdata[field]}`).join(',')} where member.ID=${qdata.prim_key};`;
+
+    console.log(selectQuery);
+    con.query(selectQuery, (err) => {
+      if (err) {
+        switch(err.errno) {
+          case 1054:
+            res.json({errorMsg: "Invalid input field! Please check input format."});
+        break;
+        case 1062:
+          res.json({errorMsg: "Member already exists!."});
+          break;
+        default:
+          res.json({errorMsg: "Error on select. Please try again."});
+          break;
+        }
+      }
+      else {
+      res.json({});
+      }
+    });
+  });
+
+
+app.route('/bookCopy')
+  .post((req, res) => {
+    console.log(`insert into copies(isbn) values(${req.body.params.ISBN});`)
+      con.query(`insert into copies(isbn) values(${req.body.params.ISBN});`, (err) => {
+        res.json({});
+    })
+  })
+  .delete((req, res) => {
+    const query = JSON.parse(req.query[0])
+    con.query(`select max(copyNr) as maxNum from copies where copies.isbn like \'${query.ISBN}\';`, (err, response) => {      
+      con.query(`delete from copies where copies.isbn like \'${query.ISBN}\' and copies.copyNr=\'${response[0].maxNum}\';`, () => {
+        res.json({});
+      })
     });
   })

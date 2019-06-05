@@ -18,6 +18,11 @@ INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName
 INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName`) VALUES ('6234567891234', 'F title', '2010', '400', 'AraPakisProd');
 INSERT INTO `librarydb`.`book` (`ISBN`, `title`, `pubYear`, `numpages`, `pubName`) VALUES ('7234567891234', 'G title', '2009', '412', 'AraPakisProd');
 
+
+INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('1234567891234', 'Academic');
+INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('2234567891234', 'Academic');
+INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('3234567891234', 'Academic');
+INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('4234567891234', 'Academic');
 INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('4234567891234', 'Novel');
 INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('4234567891234', 'Erotica');
 INSERT INTO `librarydb`.`belongs_to` (`isbn`, `categoryName`) VALUES ('3234567891234', 'Thriller');
@@ -43,13 +48,14 @@ INSERT INTO `librarydb`.`copies` (`ISBN`, `shelf`) VALUES ('6234567891234', 'E98
 
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('3', '1234567891234', '1', '2019-05-03', '2019-05-10');
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('2', '3234567891234', '1', '2019-05-07', '2019-05-14');
+-- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('4', '1234567891234', '2', '2019-05-01');
+-- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('4', '3234567891234', '2', '2019-05-01');
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('4', '5234567891234', '1', '2019-05-15', '2019-05-22');
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('1', '2234567891234', '1', '2019-05-02', '2019-05-09');
 INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`, `date_of_return`) VALUES ('5', '4234567891234', '1', '2019-05-01', '2019-05-08');
--- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '4234567891234', '2', '2019-05-01');
+INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '4234567891234', '2', '2019-05-01');
 -- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '2234567891234', '2', '2019-05-01');
 -- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '1234567891234', '2', '2019-05-01');
--- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '3234567891234', '2', '2019-05-01');
 -- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '5234567891234', '2', '2019-05-01');
 
 INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('1', 'Kwnstantina', 'Skovola', '80');

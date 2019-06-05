@@ -73,10 +73,10 @@ class DisplayTable extends Component {
    }
 
    bookCopy = (i,flag) => {
-    if(flag){
-    axios.get(this.state.address+"Copy",
+       if(flag){
+    axios.post(this.state.address+"Copy",
       {
-          params: i
+          params: i[0]
       })
       .then(() => {
           axios.get(this.state.address, {
@@ -89,7 +89,7 @@ class DisplayTable extends Component {
             });
       })
     } else {
-        axios.get(this.state.address+"Copy",
+        axios.delete(this.state.address+"Copy",
         {
             params: i
         })
@@ -130,11 +130,10 @@ class DisplayTable extends Component {
                             } addCopy={(this.state.type==="book")}
                                 manCopy = {
                                     (flag) => this.bookCopy(
+                                        this.state.prim_key.map(
                                         (pkey)=> ({
                                             [pkey] : bookObj[pkey]
-                                        },flag)
-                                    )
-                                }>
+                                        })),flag)}>
                             </TableRow>))
                     }
                 </tbody>
