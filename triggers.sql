@@ -52,7 +52,7 @@ from copies
 where copies.isbn = new.isbn) = 0
 then
 insert into copies(isbn, copyNr, shelf) 
-values (new.isbn, 1, "A800");
+values (new.isbn);
 end if;
 end; $$
 

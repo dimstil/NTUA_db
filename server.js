@@ -496,18 +496,51 @@ app.route('/view2')
     }
   })
   .get((req, res) => {
-    const qdata = req.query.query;
-    let query = "select id as \'ID\', eFirst as \'First Name\' , eLast as \'Last Name\' from employee_no_salary";
-    con.query(query, (err, result, fields) => {
-      namesObj = {};
-      orgNamesObj = {};
-      fields.map((obj, i) => {
-        namesObj[i] = obj.name;
-        orgNamesObj[i] = obj.orgName;
-      });
-      console.log(fields);
-      res.json({ "prim_key": ["ID"], "orgName": orgNamesObj, "names": namesObj, "result": result });
-    })
+    var qdata = JSON.parse(req.query.query);
+    console.log(qdata);
+    var selectQuery = "select id as \'ID\', eFirst as \'First Name\' , eLast as \'Last Name\' from employee_no_salary";
+    const orderBy = qdata["by"];
+    delete qdata["by"];
+    if (Object.keys(qdata).length !== 0) {
+      selectQuery += " where"
+      for (x in qdata) {
+        if (x === "ID") {
+          selectQuery += ` employee_no_salary.${x} =  ${qdata[x]}  and`;
+        }
+        else {
+          selectQuery += ` employee_no_salary.${x} like '%${qdata[x]}%' and`;
+        }
+      }
+      selectQuery = selectQuery.substring(0, selectQuery.length - 4);
+    }
+
+    selectQuery += " group by employee_no_salary.ID";
+    if (orderBy !== undefined) selectQuery += ` order by employee_no_salary.${orderBy}`;
+    selectQuery += ';';
+
+    console.log(selectQuery);
+    con.query(selectQuery, (err, result, fields) => {
+      if (err) {
+        switch (err.errno) {
+          case 1054:
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on select. Please try again." });
+            break;
+        }
+      }
+      else {
+        namesObj = {};
+        orgNamesObj = {};
+        prim_key = ["ID"];
+        fields.map((obj, i) => {
+          namesObj[i] = obj.name;
+          orgNamesObj[i] = obj.orgName;
+        });
+        res.json({ "prim_key": prim_key, "orgName": orgNamesObj, "names": namesObj, "result": result });
+      }
+    });
   })
   .delete((req, res) => {
     const query = JSON.parse(req.query[0])
