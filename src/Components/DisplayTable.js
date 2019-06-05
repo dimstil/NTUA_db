@@ -74,7 +74,7 @@ class DisplayTable extends Component {
 
    bookCopy = (i,flag) => {
     if(flag){
-    axios.get(this.state.address+"Copy",
+    axios.post(this.state.address+"Copy",
       {
           params: i
       })
@@ -89,7 +89,7 @@ class DisplayTable extends Component {
             });
       })
     } else {
-        axios.get(this.state.address+"Copy",
+        axios.delete(this.state.address+"Copy",
         {
             params: i
         })
