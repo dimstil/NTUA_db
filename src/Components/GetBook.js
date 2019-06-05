@@ -99,11 +99,11 @@ class GetBook extends Component {
 			<div className="GetBook">
 				<h2>Book Info</h2>
 				<form>
-					ISBN: <input type="text" id="sel-isbn" placeholder ="Digits(13 for insert or less for get)"/>
-					Title: <input type="text" id="sel-title" placeholder = "e.g Bible"/>
-					Year Published: <input type="text" id="sel-pub-year" placeholder="e.g 1997" />
-					#pages : <input type="text" id="sel-page-num" placeholder="e.g 500"/>
-					Published by: <input type="text" id="sel-pub-name" placeholder="e.g OfhsProd"/>
+					ISBN: <input type="text" id="sel-isbn" placeholder ="Digits(13 for insert or less for get)"/><br/>
+					Title: <input type="text" id="sel-title" placeholder = "e.g Bible"/><br/>
+					Year Published: <input type="text" id="sel-pub-year" placeholder="e.g 1997" /><br/>
+					#pages : <input type="text" id="sel-page-num" placeholder="e.g 500"/><br/>
+					Published by: <input type="text" id="sel-pub-name" placeholder="e.g OfhsProd"/><br/>
 					<button onClick={this.getBook}>Get book</button>
 					<button onClick={this.insUpdate} className="formInput">Insert/Update</button>
 				</form>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './DisplayTable.css';
+
 import { type } from 'os';
 
 class DisplayTable extends Component {
@@ -156,7 +157,7 @@ class DisplayTable extends Component {
                                 prim_keys={this.state.prim_key}
                                 errorHandle={this.props.throwError}
                                 address={this.state.address}
-                                refr={()=>refresh(this.props)}
+                                refr={()=>this.refresh(this.props)}
                                 >
                             </TableRow>))
                     }
@@ -180,8 +181,8 @@ const TableHead = (props) => {
                 <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]}
                 id={"h"+i} style={{cursor: 'pointer'}}>{domain}</td>
             )}
-            <td>   </td>
             {(props.addCopy)?<td>Copies</td>:<></>}
+            <td style={{display:'none' }}>   </td>
         </tr>
     )
 }
@@ -263,17 +264,17 @@ class TableRow extends Component {
   
                             (this.state.updateMode.indexOf(i)!==-1)?<input type="text" className={"Upd"+this.props.rowNo}
                             id={i} 
-                            placeholder="`${i}`"/>:domain
+                            value={domain}/>:domain
                         }</td>
                     )}
                     <td onClick={this.props.clickFun} className="delSym"style={{cursor:'pointer'}}>x</td>
-                    {(this.props.addCopy)?<div>
+                    {(this.props.addCopy)?<td>
                         <td><div onClick={() => {this.props.manCopy(true)}} className="addSym" style={{cursor:'pointer'}}>+</div></td>
                         <td><div onClick={() => {this.props.manCopy(false)}} className="redSym" style={{cursor:'pointer'}}>-</div>
-                        </td></div>:
+                        </td></td>:
                         <></>}
                     {(this.state.updateMode===[])?<></>:
-                    <td><button onClick={()=> this.updateRow()}>Update</button></td> }   
+                  <td style={{}}>  <button onClick={()=> this.updateRow()}>Update</button> </td>}   
                 </tr>
             );
         }

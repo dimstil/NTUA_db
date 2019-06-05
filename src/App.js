@@ -10,6 +10,7 @@ import SideDrawer from './Components/SideDrawer/SideDrawer';
 import Backdrop from './Components/Backdrop/Backdrop';
 import DisplayTable from './Components/DisplayTable';
 import AlertDismissable from './Components/AlertDismissable';
+import './Components/Form.css'
 
 class App extends Component {
   constructor() {
@@ -120,7 +121,8 @@ class App extends Component {
     return (
       <div className="App">
         <Toolbar changeType={this.setType} //home={this.setHomepageType} 
-        drawerClickHandler={this.drawerToggleClickHandler}/>
+        drawerClickHandler={this.drawerToggleClickHandler}
+        style={{zIndex:"600"}}/>
         <SideDrawer show={this.state.sideDrawerOpen} />
         {backdrop}
         <main>
