@@ -48,7 +48,11 @@ class GetBook extends Component {
 			}
 		})
 			.then((response) => {
-				this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
+				if (response.data.errorMsg) {
+					this.props.throwError(response.data.errorMsg)
+				} else {
+					this.props.displayData(selquer, [response.data["names"]].concat(response.data["result"]), response.data["orgName"], response.data["prim_key"]);
+				}
 			});
 	};
 
@@ -83,8 +87,10 @@ class GetBook extends Component {
 		// }
 		axios.post('http://localhost:5000/book', selquer)
 			.then((response) => {
-				this.retrieveData();
-				console.log(response.data.errorMsg);
+				if (response.data.errorMsg) {
+					this.props.throwError(response.data.errorMsg);
+				} 
+					this.retrieveData();
 			})
 	};
 

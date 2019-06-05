@@ -49,9 +49,7 @@ class AlertDismissible extends React.Component {
             background: "#f8d7da",
             color:'#721c24',
             }}>
-            <a style={{ position: 'relative', left: '55%',textAlign:"right", cursor:'pointer'}}
-              onClick={handleHide}
-              ><strong>x</strong></a>
+           
             <Alert.Heading style={{
              // position: 'static',
               display:'inline-block',
@@ -61,12 +59,14 @@ class AlertDismissible extends React.Component {
               position: 'static',
               left:'0.1rem',
               display:'inline',
-              textAlign:'left'    }}> Insert Failed!</strong>
+              textAlign:'left'    }}> ERROR !</strong>
             </Alert.Heading>
+            <a style={{ position: 'relative' ,left: '45%',textAlign:"right", cursor:'pointer', display:'inline-block'}}
+              onClick={handleHide}
+              ><strong>x</strong></a>
 
             <p style={{ background: "#f8d7da"  }}>
-                Fill all necessary fields and try again!
-                {this.state.errorMsg}
+                  {this.state.errorMsg}
             </p>
 
           </Alert>

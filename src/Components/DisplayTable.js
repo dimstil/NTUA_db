@@ -130,10 +130,11 @@ class DisplayTable extends Component {
                             } addCopy={(this.state.type==="book")}
                                 manCopy = {
                                     (flag) => this.bookCopy(
+                                        this.state.prim_key.map(
                                         (pkey)=> ({
                                             [pkey] : bookObj[pkey]
-                                        },flag)
-                                    )
+                                        }))
+                                        ,flag)
                                 }>
                             </TableRow>))
                     }
