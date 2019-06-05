@@ -13,7 +13,7 @@ class sideDrawer extends Component  {
     componentDidUpdate(prevProps) {
         if(prevProps!==this.props){
             this.setState({
-                query : this.state.query,
+                query : (this.props.show)?this.state.query:0,
                 drawerClasses : (this.props.show)?"side-drawer open":"side-drawer"
             })
         }
@@ -35,11 +35,11 @@ class sideDrawer extends Component  {
             <ul>
                 <li><button onClick ={() => this.changeType(1)}>Query 1</button></li>
                 <li><button onClick ={() => this.changeType(2)}>Query 2</button></li>
-                <li><button onClick ={() => this.changeType("")}>Query 3</button></li>
-                <li><button onClick ={() => this.changeType("")}>Query 4</button></li>
-                <li><button onClick ={() => this.changeType("")}>Query 5</button></li>
-                <li><button onClick ={() => this.changeType("")}>Query 6</button></li>
-                <li><button onClick ={() => this.changeType("")}>Query 7</button></li>
+                <li><button onClick ={() => this.changeType(3)}>Query 3</button></li>
+                <li><button onClick ={() => this.changeType(4)}>Query 4</button></li>
+                <li><button onClick ={() => this.changeType(5)}>Query 5</button></li>
+                <li><button onClick ={() => this.changeType(6)}>Query 6</button></li>
+                <li><button onClick ={() => this.changeType(7)}>Query 7</button></li>
 
                 </ul>
             </nav>

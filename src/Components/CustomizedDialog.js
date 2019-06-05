@@ -55,14 +55,18 @@ class CustomizedDialogs extends React.Component {
         super(props);    
         this.state = {
             open: false,
-            type: props.type
+            type: props.type,
+            fields: [],
+            data:[]
         };
     }
 
     componentDidMount(){
         this.setState ({
             open:false,
-            type: 0
+            type: 0,
+            fields: [],
+            data:[]
         })
     }
     componentDidUpdate(prevProps) {
@@ -71,7 +75,9 @@ class CustomizedDialogs extends React.Component {
         if(prevProps!==this.props){
             this.setState({
                 open :  (this.props.type!==0),
-                type : this.props.type
+                type : this.props.type,
+                fields: [],
+                data:[]
             })
         }
 
@@ -88,11 +94,27 @@ class CustomizedDialogs extends React.Component {
     this.setState({ open: false });
   };
 
-  
+  to_show = () =>{ return( 
+    <table className="Unit-Table">
+    <thead>
+        <TableHead 
+        object={this.state.fields}/>
+    </thead>
+    <tbody>
+        { 
+            this.state.data.map((obj,i) =>
+            (
+                <TableRow key={i} object={obj}/>
+            )
+            )
+        }
+    </tbody>
+    </table>);
+  }
 
 
   render() {
-     var to_show;
+
      console.log(this.state)
      if(this.state.open)
         axios.get("http://localhost:5000/query",{
@@ -105,22 +127,15 @@ class CustomizedDialogs extends React.Component {
                     this.props.throwError(response.data.errorMsg);
 
                 else {
-                    to_show = <table className="Unit-Table">
-                        <thead>
-                            <TableHead 
-                            object={response.data.names}/>
-                        </thead>
-                        <tbody>
-                            { 
-                                this.data.result.map((obj,i) =>
-                                (
-                                    <TableRow key={i} object={obj}/>
-                                )
-                                )
-                            }
-                        </tbody>
-                    </table>
-                }
+                    this.setState({
+                        open: this.state.open,
+                        type:this.state.type,
+                        fields: response.data.names,
+                        data: response.data.result
+                    })
+                   
+                console.log(response.data)    
+            }
 
             });
     return (
@@ -131,22 +146,33 @@ class CustomizedDialogs extends React.Component {
           aria-labelledby="customized-dialog-title"
           open={this.state.open}
         >
+
           <DialogTitle id="customized-dialog-title" onClose={this.handleClose}>
             {(() => {
                 switch(this.state.type){
                     case(1):
-                        return <h6>Number of Members</h6>;
+                        return <>Number of Members</>;
                     case(2):
-                        return <h6>Number of Copies for each Book</h6>;
+                        return <>Number of Copies for each Book</>;
+                    case(3):
+                        return <>Books in Descendig Page Order</>;
+                    case(4):
+                        return <>Members who have more than 3 books borrowed and those Books</>;
+                    case(5):
+                        return <>ISBN of Books that are borrowed by 2 or more Members</>;
+                    case(6):
+                        return <>ISBN,title,category with a null field</>;
+                    case(7):
+                        return <>Authors of Books</>;
                     default:
-                        return <h6>SUCKAh</h6>;
+                        return <>SUCKAh</>;
                 }
                 })()
             }
 
           </DialogTitle>
           <DialogContent dividers>
-            {(to_show === undefined)?<h1>SHIT</h1>:to_show}
+            {this.to_show()}
 
           </DialogContent>
           <DialogActions>
@@ -177,11 +203,11 @@ return null;
 
 const TableRow = (props) => {
 
-    if (this.props.object !== undefined) {
+    if (props.object !== undefined) {
         return (
             <tr>
-                {Object.values(this.props.object).map((domain, i) =>
-                    <td key={i}> domain                        
+                {Object.values(props.object).map((domain, i) =>
+                    <td key={i}> {domain}                        
                     </td>
                 )}
                

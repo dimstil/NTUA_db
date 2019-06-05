@@ -43,3 +43,7 @@ input[type=text] input[type=date]{
     width:50%
 
   }
+  form input:hover{
+    border-color:#83cf87
+
+  }

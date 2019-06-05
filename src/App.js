@@ -12,8 +12,8 @@ import DisplayTable from './Components/DisplayTable';
 import AlertDismissable from './Components/AlertDismissable';
 import Carousel from './carousel/Carousel';
 import './Components/Form.css'
-import FullScreenDialog from './Components/FullScreenDialog'
-import CustomizedDialogs from './Components/CustomizedDialog';
+import GetEmployees from './Components/GetEmployees';
+
 
 class App extends Component {
   constructor() {
@@ -117,7 +117,16 @@ class App extends Component {
               throwError={this.setErrorMsg}/>
             </div>
         break; 
-     
+        case("view2"):
+        renderType = <div className="App-Content">
+          <GetEmployees displayData={this.displayData} throwError={this.setErrorMsg}/>
+          <DisplayTable type={this.state.type} query={this.state.query} 
+          displayedData={this.state.displayedData} 
+          displayedFields={this.state.displayedFields} 
+          prim_key={this.state.prim_key}
+          throwError={this.setErrorMsg}/>
+        </div>
+        break;
       default:
         renderType = <h1>ERROR</h1>;  
     }

@@ -425,7 +425,7 @@ app.route('/query')
     console.log(req.query.num);
     const queryNum = req.query.num
     let query = "";
-    switch (queryNum) {
+    switch (Number(queryNum)) {
       case 1:
         query = `select count(*) as \'Number of Members\' from member;`;
         break;

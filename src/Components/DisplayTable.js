@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import './DisplayTable.css';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import Icon from '@material-ui/core/Icon';
+import { makeStyles } from '@material-ui/core/styles';
 
 import { type } from 'os';
 
@@ -181,8 +184,11 @@ const TableHead = (props) => {
                     <td key={i} onClick={props.onClick} order={props.order} value={props.values[i]}
                         id={"h" + i} style={{ cursor: 'pointer' }}>{domain}</td>
                 )}
-                {(props.addCopy) ? <td>Copies</td> : <></>}
-                <td style={{ display: 'none' }}>   </td>
+                <td><DeleteRoundedIcon className="classes.icon"/></td>
+
+                    {(props.addCopy) ? <td>Copies</td> : <></>}
+                    <td style={{ display: 'none' }}/>   
+
             </tr>
         )
     }
@@ -269,14 +275,16 @@ class TableRow extends Component {
                                 defaultValue={domain} /> : domain
                         }</td>
                     )}
-                    <td onClick={this.props.clickFun} className="delSym" style={{ cursor: 'pointer' }}>x</td>
+                    <td onClick={this.props.clickFun}  style={{ cursor: 'pointer' }}><p className="delSym">x</p></td>
                     {(this.props.addCopy) ? <td>
-                        <td><div onClick={() => { this.props.manCopy(true) }} className="addSym" style={{ cursor: 'pointer' }}>+</div></td>
-                        <td><div onClick={() => { this.props.manCopy(false) }} className="redSym" style={{ cursor: 'pointer' }}>-</div>
-                        </td></td> :
-                        <></>}
-                    {(this.state.updateMode === []) ? <></> :
-                        <td style={{}}>  <button onClick={() => this.updateRow()}>Update</button> </td>}
+
+                        <i onClick={() => { this.props.manCopy(true) }} 
+                             className="addSym">+
+                            </i> 
+                        <i onClick={() => { this.props.manCopy(false) }} className="redSym" style={{ cursor: 'pointer' }}>)-</i> </td>
+                        :   <></>}
+                          {(this.state.updateMode === []) ? <></> :
+                        <td style={{}}>  <button onClick={() => this.updateRow()} class>Update</button> </td>}
                 </tr>
             );
         }
