@@ -48,32 +48,35 @@ app.route('/book')
             res.json({ errorMsg: "Invalid input field. Check input format" });
             break;
           case 1062:
-            res.json({ errorMsg: "Book already exists!"});
+            res.json({ errorMsg: "Book already exists!" });
             break;
           case 1136:
-            res.json({ errorMsg: "Necessary fields are empty! Please fill all fields."});
+            res.json({ errorMsg: "Necessary fields are empty! Please fill all fields." });
+            break;
+          case 1452:
+            res.json({ errorMsg: "Publisher does not exist! Please type a valid publisher name." });
             break;
           default:
-            res.json({ errorMsg: "Error on insert. Please try again"});
+            res.json({ errorMsg: "Error on insert. Please try again" });
             break;
         }
       }
-    else {
-    res.json({});
-    }
+      else {
+        res.json({});
+      }
+    })
   })
-})
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
     var selectQuery = "select book.isbn as \"ISBN\", title as \"Title\", pubYear as \"Published on\", numpages as \"No. of Pages\", pubName as \"Published by\", count(copies.isbn) as \"No. of Copies\" from book left join copies on book.ISBN=copies.ISBN"
-    
+
     const orderBy = qdata["by"];
     delete qdata["by"];
-    
+
     const atLeastPages = qdata["numPages"];
     delete qdata["numPages"];
-    
+
     if (Object.keys(qdata).length !== 0) {
       selectQuery += " where"
       for (x in qdata) {
@@ -95,24 +98,24 @@ app.route('/book')
     console.log(selectQuery);
     con.query(selectQuery, (err, result, fields) => {
       if (err) {
-        switch(err.errno) {
+        switch (err.errno) {
           case 1054:
-            res.json({errorMsg: "Invalid input field! Please check input format."});
-        break;
-        default:
-            res.json({errorMsg: "Error on select. Please try again."});
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on select. Please try again." });
             break;
         }
       }
       else {
-      namesObj = {};
-      orgNamesObj = {};
-      prim_key = ["ISBN"];
-      fields.map((obj, i) => {
-        namesObj[i] = obj.name;
-        orgNamesObj[i] = obj.orgName;
-      });
-      res.json({ "prim_key": prim_key, "orgName": orgNamesObj, "names": namesObj, "result": result });
+        namesObj = {};
+        orgNamesObj = {};
+        prim_key = ["ISBN"];
+        fields.map((obj, i) => {
+          namesObj[i] = obj.name;
+          orgNamesObj[i] = obj.orgName;
+        });
+        res.json({ "prim_key": prim_key, "orgName": orgNamesObj, "names": namesObj, "result": result });
       }
     });
   })
@@ -126,60 +129,64 @@ app.route('/book')
     });
   })
   .put((req, res) => {
-    var qdata = JSON.parse(req.query.query);
-    var selectQuery = `update book set ${Object.keys(qdata).map(field => `book.${field} = ${qdata[field]}`).join(',')} where book.isbn=${qdata.prim_key};`;
+    const fields = req.body.fields;
+    const key = req.body.key;
+    console.log(fields);
+
+    var selectQuery = `update book set ${Object.keys(fields).map(field => `book.${field} = \'${fields[`${field}`]}\'`).join(',')} where book.isbn=\'${key.ISBN}\';`;
 
     console.log(selectQuery);
     con.query(selectQuery, (err) => {
       if (err) {
-        switch(err.errno) {
+        switch (err.errno) {
           case 1054:
-            res.json({errorMsg: "Invalid input field! Please check input format."});
-        break;
-        case 1062:
-          res.json({errorMsg: "Book already exists!."});
-          break;
-        default:
-          res.json({errorMsg: "Error on select. Please try again."});
-          break;
+          case 1366:
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          case 1062:
+            res.json({ errorMsg: "Book already exists!." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on update. Please try again." });
+            break;
         }
       }
       else {
-      res.json({});
+        res.json({});
       }
     });
   });
 
 
 app.route('/author')
-.post((req, res) => {
-  req.body.aBirthdate === '' ? '' : dateFrontToBack(req.body.aBirthdate);
-  con.query(`insert into author(ID, aFirst, aLast, aBirthdate) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`, (err) => {
-    if(err) {
-      switch(err.errno) {
-        case 1054:
-        case 1406:
-          res.json({errorMsg: "Invalid input field! Please check input format."});
-          break;
-        case 1136:
-            res.json({ errorMsg: "Necessary fields are empty! Please fill all fields."});
+  .post((req, res) => {
+    req.body.aBirthdate === '' ? '' : dateFrontToBack(req.body.aBirthdate);
+    con.query(`insert into author(ID, aFirst, aLast, aBirthdate) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`, (err) => {
+      if (err) {
+        switch (err.errno) {
+          case 1054:
+          case 1406:
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
             break;
-        case 1062:
-            res.json({ errorMsg: "Author already exists!"});
+          case 1136:
+            res.json({ errorMsg: "Necessary fields are empty! Please fill all fields." });
+            break;
+          case 1062:
+            res.json({ errorMsg: "Author already exists!" });
             break;
           default:
-              res.json({errorMsg: "Error on insert. Please try again"});
-          break;
+            res.json({ errorMsg: "Error on insert. Please try again" });
+            break;
         }
-    }
-    else {
-      res.json({});
       }
-  });
+      else {
+        res.json({});
+      }
+    });
   })
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
-    var selectQuery = "select author.ID as \"ID\", aFirst as \"First Name\", aLast as \"Last Name\", aBirthdate as \"Date of Birth\", count(*) as \"# Written Books\" from author inner join written_by on author.ID=written_by.ID";
+    var selectQuery = "select author.ID as \"ID\", aFirst as \"First Name\", aLast as \"Last Name\", aBirthdate as \"Date of Birth\", count(written_by.ISBN) as \"# Written Books\" from author left join written_by on author.ID=written_by.ID";
     const orderBy = qdata["by"];
     delete qdata["by"];
     if (Object.keys(qdata).length !== 0) {
@@ -205,27 +212,27 @@ app.route('/author')
     console.log(selectQuery);
     con.query(selectQuery, (err, result, fields) => {
       if (err) {
-        switch(err) {
+        switch (err) {
           case 1054:
-            res.json({errorMsg: "Invalid input field! Please check input format."});
-        break;
-        default:
-            res.json({errorMsg: "Error on select. Please try again."});
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on select. Please try again." });
             break;
         }
       }
       else {
-      namesObj = {};
-      orgNamesObj = {};
-      prim_key = ["ID"];
-      fields.map((obj, i) => {
-        namesObj[i] = obj.name;
-        orgNamesObj[i] = obj.orgName;
-      });
-      result.forEach(el => {
-        el["Date of Birth"] = dateBackToFront(el["Date of Birth"]);
-      });
-      res.json({ "prim_key": prim_key, "orgName": orgNamesObj, "names": namesObj, "result": result });
+        namesObj = {};
+        orgNamesObj = {};
+        prim_key = ["ID"];
+        fields.map((obj, i) => {
+          namesObj[i] = obj.name;
+          orgNamesObj[i] = obj.orgName;
+        });
+        result.forEach(el => {
+          el["Date of Birth"] = dateBackToFront(el["Date of Birth"]);
+        });
+        res.json({ "prim_key": prim_key, "orgName": orgNamesObj, "names": namesObj, "result": result });
       }
     });
   })
@@ -238,26 +245,34 @@ app.route('/author')
     });
   })
   .put((req, res) => {
-    var qdata = JSON.parse(req.query.query);
-    var selectQuery = `update author set ${Object.keys(qdata).map(field => `author.${field} = ${qdata[field]}`).join(',')} where author.ID=${qdata.prim_key};`;
+    const fields = req.body.fields;
+    const key = req.body.key;
+    if (fields.aBirthdate) {
+      fields.aBirthdate = dateFrontToBack(fields.aBirthdate);
+    }
+    console.log(fields);
+    var selectQuery = `update author set ${Object.keys(fields).map(field => `author.${field} = \'${fields[`${field}`]}\'`).join(',')} where author.ID=\'${key.ID}\';`;
+
 
     console.log(selectQuery);
     con.query(selectQuery, (err) => {
       if (err) {
-        switch(err.errno) {
+        switch (err.errno) {
           case 1054:
-            res.json({errorMsg: "Invalid input field! Please check input format."});
-        break;
-        case 1062:
-          res.json({errorMsg: "Author already exists!."});
-          break;
-        default:
-          res.json({errorMsg: "Error on select. Please try again."});
-          break;
+          case 1366:
+          case 1292:
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          case 1062:
+            res.json({ errorMsg: "Author already exists!." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on update. Please try again." });
+            break;
         }
       }
       else {
-      res.json({});
+        res.json({});
       }
     });
   });
@@ -268,35 +283,35 @@ app.route('/member')
 
     console.log(`insert into member(ID, mFirst, mLast, street, streetNumber, postalCode, mBirthdate) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`);
     con.query(`insert into member(ID, mFirst, mLast, street, streetNumber, postalCode, mBirthdate) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`, (err) => {
-      if(err) {
-        switch(err.errno) {
+      if (err) {
+        switch (err.errno) {
           case 1054:
           case 1406:
           case 3819:
           case 1366:
-            res.json({errorMsg: "Invalid input field! Please check input format."});
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
             break;
           case 1136:
-              res.json({ errorMsg: "Necessary fields are empty! Please fill all fields."});
-              break;
-          case 1062:
-              res.json({ errorMsg: "User already exists!"});
-              break;
-            default:
-                res.json({errorMsg: "Error on insert. Please try again"});
+            res.json({ errorMsg: "Necessary fields are empty! Please fill all fields." });
             break;
-          }
+          case 1062:
+            res.json({ errorMsg: "Member already exists!" });
+            break;
+          default:
+            res.json({ errorMsg: "Error on insert. Please try again" });
+            break;
+        }
       }
       else {
         res.json({});
-        }
+      }
     });
 
   })
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
-    var selectQuery = "select member.ID as \"ID\", mFirst as \"First Name\", mLast as \"Last Name\", street as \"Street\", streetNumber as \"Street Number\", postalCode as \"Postal Code\", mBirthdate as \"Date of Birth\", count(*) as \"# Borrowed Books\" from member inner join  borrows on member.ID=borrows.ID";
+    var selectQuery = "select member.ID as \"ID\", mFirst as \"First Name\", mLast as \"Last Name\", street as \"Street\", streetNumber as \"Street Number\", postalCode as \"Postal Code\", mBirthdate as \"Date of Birth\", count(borrows.ID) as \"# Borrowed Books\" from member inner join  borrows on member.ID=borrows.ID";
     const orderBy = qdata["by"];
     delete qdata["by"];
     if (Object.keys(qdata).length !== 0) {
@@ -322,27 +337,27 @@ app.route('/member')
     console.log(selectQuery);
     con.query(selectQuery, (err, result, fields) => {
       if (err) {
-        switch(err.errno) {
+        switch (err.errno) {
           case 1054:
-            res.json({errorMsg: "Invalid input field! Please check input format."});
-        break;
-        default:
-            res.json({errorMsg: "Error on select. Please try again."});
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on select. Please try again." });
             break;
         }
       }
       else {
-      namesObj = {};
-      orgNamesObj = {};
-      prim_key = ["ID"];
-      fields.map((obj, i) => {
-        namesObj[i] = obj.name;
-        orgNamesObj[i] = obj.orgName;
-      });
-      result.forEach(el => {
-        el["Date of Birth"] = dateBackToFront(el["Date of Birth"]);
-      });
-      res.json({ "prim_key": prim_key, "orgName": orgNamesObj, "names": namesObj, "result": result });
+        namesObj = {};
+        orgNamesObj = {};
+        prim_key = ["ID"];
+        fields.map((obj, i) => {
+          namesObj[i] = obj.name;
+          orgNamesObj[i] = obj.orgName;
+        });
+        result.forEach(el => {
+          el["Date of Birth"] = dateBackToFront(el["Date of Birth"]);
+        });
+        res.json({ "prim_key": prim_key, "orgName": orgNamesObj, "names": namesObj, "result": result });
       }
     });
   })
@@ -355,26 +370,35 @@ app.route('/member')
     });
   })
   .put((req, res) => {
-    var qdata = JSON.parse(req.query.query);
-    var selectQuery = `update member set ${Object.keys(qdata).map(field => `member.${field} = ${qdata[field]}`).join(',')} where member.ID=${qdata.prim_key};`;
+    const fields = req.body.fields;
+    const key = req.body.key;
+    if (fields.mBirthdate) {
+      fields.mBirthdate = dateFrontToBack(fields.mBirthdate);
+    }
+
+    console.log(fields);
+
+    var selectQuery = `update member set ${Object.keys(fields).map(field => `member.${field} = \'${fields[`${field}`]}\'`).join(',')} where member.ID=${key.ID};`;
 
     console.log(selectQuery);
     con.query(selectQuery, (err) => {
       if (err) {
-        switch(err.errno) {
+        switch (err.errno) {
           case 1054:
-            res.json({errorMsg: "Invalid input field! Please check input format."});
-        break;
-        case 1062:
-          res.json({errorMsg: "Member already exists!."});
-          break;
-        default:
-          res.json({errorMsg: "Error on select. Please try again."});
-          break;
+          case 1366:
+          case 1406:
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          case 1062:
+            res.json({ errorMsg: "Member already exists!." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on select. Please try again." });
+            break;
         }
       }
       else {
-      res.json({});
+        res.json({});
       }
     });
   });
@@ -383,15 +407,79 @@ app.route('/member')
 app.route('/bookCopy')
   .post((req, res) => {
     console.log(`insert into copies(isbn) values(${req.body.params.ISBN});`)
-      con.query(`insert into copies(isbn) values(${req.body.params.ISBN});`, (err) => {
-        res.json({});
+    con.query(`insert into copies(isbn) values(${req.body.params.ISBN});`, () => {
+      res.json({});
     })
   })
   .delete((req, res) => {
     const query = JSON.parse(req.query[0])
-    con.query(`select max(copyNr) as maxNum from copies where copies.isbn like \'${query.ISBN}\';`, (err, response) => {      
-      con.query(`delete from copies where copies.isbn like \'${query.ISBN}\' and copies.copyNr=\'${response[0].maxNum}\';`, () => {
+    con.query(`select max(copyNr) as maxNum from copies where copies.isbn like \'${query.ISBN}\';`, (err, result) => {
+      con.query(`delete from copies where copies.isbn like \'${query.ISBN}\' and copies.copyNr=\'${result[0].maxNum}\';`, () => {
         res.json({});
       })
     });
+  })
+
+app.route('/query')
+  .get((req, res) => {
+    const queryNum = req.query
+    let query = "";
+    switch (queryNum) {
+      case 1:
+        query = `select count(*) as \'Number of Members\' from member;`;
+        break;
+      case 2:
+        query = `select copies.isbn as \'ISBN\', count(*) as \'Number of Copies\' from copies group by copies.isbn;`;
+        break;
+      case 3:
+        query = `select book.isbn as \'ISBN\', book.title as \'Title\', book.numpages as \'# of pages\' from book order by book.numpages desc;`;
+        break;
+      case 4:
+        query = `select member.mFirst as \'First Name\', member.mLast as \'Last Name\', count(*) as \'Borrowed books\' from member inner join borrows on borrows.id = member.id where borrows.date_of_return is null group by member.id having count(*) >= 3;`;
+        break;
+      case 5:
+        query = `select distinct borrows.isbn as \'ISBN\' from (select borrows.isbn as isbn, m1.ID as ID from member as m1 inner join borrows on m1.ID = borrows.ID) as borrowed_books_by inner join borrows on borrows.isbn = borrowed_books_by.isbn where borrows.ID  != borrowed_books_by.ID;`;
+        break;
+      case 6:
+        query = `select book.isbn as \'ISBN\', book.title  as \'Title\', belongs_to.categoryName as \'Category\' from book left join belongs_to on book.isbn = belongs_to.isbn;`;
+        break;
+      case 7:
+        query = `select book.isbn as \'ISBN\', book.title  as \'Title\', author.aFirst  as \'First Name\', author.aLast  as \'Last Name\' from book left join written_by on book.isbn = written_by.isbn inner join author on written_by.ID = author.ID;`;
+        break;
+    }
+    con.query(query, (err, result, fields) => {
+      namesObj = {};
+      orgNamesObj = {};
+      fields.map((obj, i) => {
+        namesObj[i] = obj.name;
+        orgNamesObj[i] = obj.orgName;
+      });
+      res.json({ "prim_key": "", "orgName": orgNamesObj, "names": namesObj, "result": result });
+    })
+  })
+
+app.route('/view')
+  .get((req, res) => {
+    const queryNum = req.query
+    let query = "";
+    switch (queryNum) {
+      case 1:
+        query = "select  * from to_remind";
+        break;
+      case 2:
+        query = "select  * from employee_no_salary";
+        break;
+    }
+    con.query(query, (err, result) => {
+      namesObj = {};
+      orgNamesObj = {};
+      fields.map((obj, i) => {
+        namesObj[i] = obj.name;
+        orgNamesObj[i] = obj.orgName;
+      });
+      res.json({ "prim_key": "", "orgName": orgNamesObj, "names": namesObj, "result": result });
+    })
+  })
+  .post((req, res) => {
+    con.query(`insert into employee_no_salary(eFirst, eLast) values(\'${req.body.eFirst}\', \'${req.body.eLast}\')`);
   })

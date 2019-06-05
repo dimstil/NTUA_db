@@ -19,7 +19,7 @@ for each row
 begin
 if exists (select distinct borrows.id 
 			from borrows 
-            where borrows.date_of_return is null 
+            where borrows.date_of_return is null and borrows.id = new.id
             having count(*) = 5)
 then
 signal sqlstate '45000'
