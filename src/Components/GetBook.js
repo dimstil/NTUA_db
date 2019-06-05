@@ -105,7 +105,7 @@ class GetBook extends Component {
 					#pages : <input type="text" id="sel-page-num" placeholder="e.g 500"/><br/>
 					Published by: <input type="text" id="sel-pub-name" placeholder="e.g OfhsProd"/><br/>
 					<button onClick={this.getBook}>Get book</button>
-					<button onClick={this.insUpdate} className="formInput">Insert/Update</button>
+					<button onClick={this.insUpdate} className="formInput">Insert Book</button>
 				</form>
 			</div>
 		);

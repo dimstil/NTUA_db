@@ -162,7 +162,7 @@ class DisplayTable extends Component {
                                 prim_keys={this.state.prim_key}
                                 errorHandle={this.props.throwError}
                                 address={this.state.address}
-                                refr={() => this.getEverything}
+                                refr={() => this.getEverything()}
                             >
                             </TableRow>))
                     }

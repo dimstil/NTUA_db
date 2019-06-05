@@ -32,23 +32,18 @@ class GetEmployee extends Component {
 			e.preventDefault();
 			const formFields = [document.querySelector('#sel-eFirst'),
                 document.querySelector('#sel-eLast')];
-			const [ID, mFirst, mLast, street, streetNumber,postalCode, mBirthdate] = formFields.map((field) => field.value);
+			const [eFirst, eLast] = formFields.map((field) => field.value);
 			formFields.map((field) => field.value = "");
 			var selquer = {
-				ID: ID,
-				mFirst: mFirst,
-                mLast: mLast,
-                street: street,
-                streetNumber: streetNumber,
-                postalCode: postalCode,
-				mBirthdate: mBirthdate
+				eFirst: eFirst,
+                eLast: eLast
 			};
 			for (var x in selquer) {
 				if (selquer[x] === "") {
 					delete selquer[x];
 				}
 			}
-			axios.get('http://localhost:5000/member', {
+			axios.get('http://localhost:5000/view2', {
 				params: {
 					query: selquer
 				}
