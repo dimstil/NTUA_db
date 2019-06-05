@@ -63,16 +63,16 @@ INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) 
 -- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '1234567891234', '2', '2019-05-01');
 -- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('1', '5234567891234', '2', '2019-05-01');
 
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('1', 'Kwnstantina', 'Skovola', '80');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('2', 'Marigw', 'Papadiamadi', '5');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('3', 'Magdalini', 'Psarakwstena', '60');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('4', 'Filio', 'Skafida', '57');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('5', 'Aris', 'Kozuris', '6');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('6', 'Nikos', 'Karapaulos', '2');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('7', 'Theano', 'Petrwna', '15');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('8', 'Asimakis', 'Boulgaris', '26');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('9', 'Baggelis', 'Kastanas', '71');
-INSERT INTO `librarydb`.`employee` (`empID`, `eFirst`, `eLast`, `salary`) VALUES ('10', 'Giannis', 'Barolis', '13');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('1', 'Kwnstantina', 'Skovola', '80');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('2', 'Marigw', 'Papadiamadi', '5');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('3', 'Magdalini', 'Psarakwstena', '60');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('4', 'Filio', 'Skafida', '57');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('5', 'Aris', 'Kozuris', '6');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('6', 'Nikos', 'Karapaulos', '2');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('7', 'Theano', 'Petrwna', '15');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('8', 'Asimakis', 'Boulgaris', '26');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('9', 'Baggelis', 'Kastanas', '71');
+INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('10', 'Giannis', 'Barolis', '13');
 
 INSERT INTO `librarydb`.`permanent_employee` (`empID`, `hiringDate`) VALUES ('1', '2018-04-13');
 INSERT INTO `librarydb`.`permanent_employee` (`empID`, `hiringDate`) VALUES ('2', '2018-10-20');

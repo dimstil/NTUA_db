@@ -42,6 +42,8 @@ app.route('/book')
         console.log(err.errno)
         switch (err.errno) {
           case 1406:
+            res.json({ errorMsg: "Input too long! Please try again." });
+            break;
           case 3819:
           case 1265:
           case 1366:
@@ -139,6 +141,9 @@ app.route('/book')
     con.query(selectQuery, (err) => {
       if (err) {
         switch (err.errno) {
+          case 1406:
+            res.json({ errorMsg: "Input too long! Please try again." });
+            break;
           case 1054:
           case 1366:
             res.json({ errorMsg: "Invalid input field! Please check input format." });
@@ -164,8 +169,10 @@ app.route('/author')
     con.query(`insert into author(ID, aFirst, aLast, aBirthdate) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`, (err) => {
       if (err) {
         switch (err.errno) {
-          case 1054:
           case 1406:
+            res.json({ errorMsg: "Input too long! Please try again." });
+            break;
+          case 1054:
             res.json({ errorMsg: "Invalid input field! Please check input format." });
             break;
           case 1136:
@@ -258,6 +265,9 @@ app.route('/author')
     con.query(selectQuery, (err) => {
       if (err) {
         switch (err.errno) {
+          case 1406:
+            res.json({ errorMsg: "Input too long! Please try again." });
+            break;
           case 1054:
           case 1366:
           case 1292:
@@ -285,8 +295,10 @@ app.route('/member')
     con.query(`insert into member(ID, mFirst, mLast, street, streetNumber, postalCode, mBirthdate) values(${Object.values(req.body).filter(field => field !== '').map(field => `\'${field}\'`).join(',')});`, (err) => {
       if (err) {
         switch (err.errno) {
-          case 1054:
           case 1406:
+            res.json({ errorMsg: "Input too long! Please try again." });
+            break;
+          case 1054:
           case 3819:
           case 1366:
             res.json({ errorMsg: "Invalid input field! Please check input format." });
@@ -384,16 +396,18 @@ app.route('/member')
     con.query(selectQuery, (err) => {
       if (err) {
         switch (err.errno) {
+          case 1406:
+            res.json({ errorMsg: "Input too long! Please try again." });
+            break;
           case 1054:
           case 1366:
-          case 1406:
             res.json({ errorMsg: "Invalid input field! Please check input format." });
             break;
           case 1062:
             res.json({ errorMsg: "Member already exists!." });
             break;
           default:
-            res.json({ errorMsg: "Error on select. Please try again." });
+            res.json({ errorMsg: "Error on update. Please try again." });
             break;
         }
       }
@@ -459,28 +473,73 @@ app.route('/query')
     })
   })
 
-app.route('/view')
-  .get((req, res) => {
-    const queryNum = req.query
-    let query = "";
-    switch (queryNum) {
-      case 1:
-        query = "select  * from to_remind";
-        break;
-      case 2:
-        query = "select  * from employee_no_salary";
-        break;
+app.route('/view2')
+  .post((req, res) => {
+    console.log(`insert into employee_no_salary(eFirst, eLast) values(\'${req.body.eFirst}\', \'${req.body.eLast}\')`);
+    con.query(`insert into employee_no_salary(eFirst, eLast) values(\'${req.body.eFirst}\', \'${req.body.eLast}\')`), err => {
+      if (err) {
+        switch (err.errno) {
+          case 1406:
+            res.json({ errorMsg: "Name too long! Please try again." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on insert! Please try again." });
+            break;
+        }
+      }
+      else {
+        res.json({});
+      }
     }
-    con.query(query, (err, result) => {
+  })
+  .get((req, res) => {
+    const qdata = req.query.query;
+    let query = "select id as \'ID\', eFirst as \'First Name\' , eLast as \'Last Name\' from employee_no_salary";
+    con.query(query, (err, result, fields) => {
       namesObj = {};
       orgNamesObj = {};
       fields.map((obj, i) => {
         namesObj[i] = obj.name;
         orgNamesObj[i] = obj.orgName;
       });
-      res.json({ "prim_key": "", "orgName": orgNamesObj, "names": namesObj, "result": result });
+      console.log(fields);
+      res.json({ "prim_key": ["ID"], "orgName": orgNamesObj, "names": namesObj, "result": result });
     })
   })
-  .post((req, res) => {
-    con.query(`insert into employee_no_salary(eFirst, eLast) values(\'${req.body.eFirst}\', \'${req.body.eLast}\')`);
+  .delete((req, res) => {
+    const query = JSON.parse(req.query[0])
+    con.query(`delete from employee_no_salary where employee_no_salary.id = \'${query.ID}\'`, (err) => {
+      if (err) throw err;
+      res.json({});
+    });
   })
+  .put((req, res) => {
+    const fields = req.body.fields;
+    const key = req.body.key;
+    console.log(fields);
+    var selectQuery = `update employee_no_salary set ${Object.keys(fields).map(field => `employee_no_salary.${field} = \'${fields[`${field}`]}\'`).join(',')} where employee_no_salary.ID=${key.ID};`;
+
+    console.log(selectQuery);
+    con.query(selectQuery, (err) => {
+      if (err) {
+        switch (err.errno) {
+          case 1406:
+            res.json({ errorMsg: "Input too long! Please try again." });
+            break;
+          case 1054:
+          case 1366:
+            res.json({ errorMsg: "Invalid input field! Please check input format." });
+            break;
+          case 1062:
+            res.json({ errorMsg: "Employee already exists!." });
+            break;
+          default:
+            res.json({ errorMsg: "Error on update. Please try again." });
+            break;
+        }
+      }
+      else {
+        res.json({});
+      }
+    });
+  });

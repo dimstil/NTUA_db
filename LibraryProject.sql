@@ -80,24 +80,24 @@ create table if not exists copies(
 );
 
 create table if not exists employee(
-	empID int auto_increment, 
+	ID int auto_increment, 
     eFirst varchar(60),
     eLast varchar(60), 
     salary int,
-    primary key (empID)
+    primary key (ID)
 );
 
 create table if not exists permanent_employee(
 	empID int auto_increment, 
 	hiringDate date,
     primary key (empID),
-    foreign key(empID) references employee(empID) on delete cascade on update cascade
+    foreign key(empID) references employee(ID) on delete cascade on update cascade
 );
 create table if not exists temporary_employee(
 	empID int auto_increment,
     contractNr varchar(30),
     primary key (empID),
-    foreign key(empID) references employee(empID) on delete cascade on update cascade
+    foreign key(empID) references employee(ID) on delete cascade on update cascade
     );
 create table if not exists borrows(
 	ID int not null,
@@ -108,7 +108,8 @@ create table if not exists borrows(
     primary key(ID, ISBN, copyNr, date_of_borrowing),
     foreign key(ID) references Member(ID) on delete cascade on update cascade,
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
-    foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade on update cascade
+    foreign key(ISBN,copyNr) references copies(ISBN,copyNr) on delete cascade on update cascade,
+    check (date_of_return > date_of_borrowing)
 );
 create table if not exists belongs_to(
     isbn char(13) not null,
@@ -117,6 +118,7 @@ create table if not exists belongs_to(
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
     foreign key(categoryName) references category(categoryName) on delete cascade on update cascade
 );
+
 create table if not exists reminder(
 	empID int not null,
     memID int not null,
@@ -125,7 +127,7 @@ create table if not exists reminder(
     date_of_borrowing date not null, 
     date_of_reminder date not null,
     primary key(empID,memID,ISBN,copyNr,date_of_borrowing,date_of_reminder),
-    foreign key(empID) references employee(empID) on delete cascade on update cascade,
+    foreign key(empID) references employee(ID) on delete cascade on update cascade,
     foreign key(memID) references Member(ID) on delete cascade on update cascade,
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
     foreign key(memID, ISBN, copyNr,date_of_borrowing) references  borrows(
