@@ -50,7 +50,7 @@ create table if not exists Book(
     numpages int,
     pubName varchar(60) not null,
     primary key (ISBN),
-	foreign key(pubName) references publisher(pubName) on delete cascade on update cascade,
+	foreign key(pubName) references publisher(pubName) on delete no action on update cascade,
     check (regexp_like(isbn, '^[0-9]+$') and length(isbn) = 13),
 	check (regexp_like(pubYear, '^[0-9]+$')),
 	check (regexp_like(numpages, '^[0-9]+$'))
@@ -73,8 +73,8 @@ create table if not exists category(
 
 create table if not exists copies(
 	ISBN char(13) not null, 
-    copyNr int not null,
-    shelf  varchar(20),
+    copyNr int default 1,
+    shelf  varchar(20) default 'A800',
     primary key(ISBN,copyNr),
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade
 );
@@ -137,6 +137,6 @@ create table if not exists written_by(
     ID int not null,
     primary key(ISBN, ID),
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
-    foreign key(ID) references author(ID) on delete cascade on update cascade
+    foreign key(ID) references author(ID) on delete no action on update cascade
 );
 

@@ -19,7 +19,7 @@ for each row
 begin
 if exists (select distinct borrows.id 
 			from borrows 
-            where borrows.date_of_return is null 
+            where borrows.date_of_return is null and borrows.id = new.id
             having count(*) = 5)
 then
 signal sqlstate '45000'
@@ -34,7 +34,7 @@ for each row
 begin
 if exists (select distinct borrows.id 
 			from borrows 
-            where borrows.date_of_return is null and date_add(borrows.date_of_borrowing, interval 30 day) < curdate()
+            where borrows.id=new.id and borrows.date_of_return is null and date_add(borrows.date_of_borrowing, interval 30 day) < curdate()
             )
 then
 signal sqlstate '45000'
@@ -63,10 +63,8 @@ for each row
 begin
 if exists (select distinct isbn from copies where copies.isbn = new.isbn)
 then
-set new.copyNr = (select copyNr
+set new.copyNr = (select max(copyNr)
 from copies
-where copies.isbn = new.isbn
-order by copyNr desc
-limit 1) + 1;
+where copies.isbn = new.isbn) + 1;
 end if;
 end; $$
