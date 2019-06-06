@@ -323,7 +323,7 @@ app.route('/member')
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
     console.log(qdata);
-    var selectQuery = "select member.ID as \"ID\", mFirst as \"First Name\", mLast as \"Last Name\", street as \"Street\", streetNumber as \"Street Number\", postalCode as \"Postal Code\", mBirthdate as \"Date of Birth\", count(borrows.ID) as \"# Borrowed Books\" from member inner join  borrows on member.ID=borrows.ID";
+    var selectQuery = "select member.ID as \"ID\", mFirst as \"First Name\", mLast as \"Last Name\", street as \"Street\", streetNumber as \"Street Number\", postalCode as \"Postal Code\", mBirthdate as \"Date of Birth\", count(borrows.ID) as \"# Borrowed Books\" from member left join  borrows on member.ID=borrows.ID";
     const orderBy = qdata["by"];
     delete qdata["by"];
     if (Object.keys(qdata).length !== 0) {

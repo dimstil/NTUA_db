@@ -51,7 +51,7 @@ if (select count(*)
 from copies 
 where copies.isbn = new.isbn) = 0
 then
-insert into copies(isbn, copyNr, shelf) 
+insert into copies(isbn) 
 values (new.isbn);
 end if;
 end; $$
@@ -68,3 +68,16 @@ from copies
 where copies.isbn = new.isbn) + 1;
 end if;
 end; $$
+
+delimiter $$
+create trigger cannot_borrow_borrowed_book
+before insert on borrows
+for each row
+begin
+if exists (select * from copies inner join borrows on copies.isbn = borrows.isbn and copies.copyNr = borrows.copyNr where copies.isbn = new.isbn and copies.copyNr = new.copyNr and borrows.date_of_return is null)
+then
+signal sqlstate '45000'
+SET MESSAGE_TEXT = 'Cannot borrow borrowed book!'; 
+end if;
+end; $$
+
