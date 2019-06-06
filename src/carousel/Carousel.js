@@ -8,21 +8,33 @@ class Carousel extends Component {
 	constructor() {
 		super();
 		this.state = {
-            slideIndex : 1,
-            slidesDisplay : "none",
-            dots : ""
+            slideIndex: 1
+           
         };
     };
     
+    componentDidMount(){
+        console.log(this.state);
+
+    }
      
     
-    plusSlides(n) {
+    nextSlide = ()=>{
+        console.log(this.state);
+        let t= (this.state.slideIndex+1)%3+1;
         this.setState({
-            slideIndex : ((this.state.slideIndex+n)%3 +1)
+            slideIndex : t
+        } )
+    }
+    prevSlide = () => {
+        console.log(this.state);
+        let t = (this.state.slideIndex===1)?3:(this.state.slideIndex-1);
+        this.setState({
+            slideIndex : t
         } )
     }
     
-    currentSlide(n) {
+    currentSlide=(n)=>{
      this.setState({
           slideIndex : n
       } );
@@ -36,29 +48,31 @@ class Carousel extends Component {
 
                     <div className="mySlides fade" style={{
                         display : (this.state.slideIndex===1)?"block":"none"
-                    }}>
+                        }}>
                         <div className="numbertext">1 / 3</div>
-                            <img src={Pic1} style={{width:"100%"}}/>
-                        <div className="text">Welcome to the NTUA Library</div>
+                        <img src={Pic1} style={{width:"100%"}}/>
+                        <h3 className="text">Welcome to the NTUA Library</h3>
                     </div>
+                    
 
                     <div className="mySlides fade" style={{
-                    display : (this.state.slideIndex===2)?"block":"none"
-                    }}>
+                        display : (this.state.slideIndex===2)?"block":"none"
+                        }}>
                         <div className="numbertext">2 / 3</div>
                         <img src={Pic2}  style={{width:"100%"}}/>
-                        <div className="text">Explore the Library</div>
+                        <h3 className="text">Explore the Library</h3>
                     </div>
+                    
                     <div className="mySlides fade"style={{
-                    display : (this.state.slideIndex===3)?"block":"none"
-                    }}>
+                        display : (this.state.slideIndex===3)?"block":"none"
+                        }}>
                         <div className="numbertext">3 / 3</div>
                         <img src={Pic3}  style={{width:"100%"}}/>
 
                     </div>
 
-                    <a className="prev" onClick={()=> this.plusSlides(-1)}>&#10094;</a>
-                    <a className="next" onClick={()=> this.plusSlides(1)}>&#10095;</a>
+                    <a className="prev" onClick={this.prevSlide}>&#10094;</a>
+                    <a className="next" onClick={this.nextSlide}>&#10095;</a>
 
                 </div>
                 <br/>

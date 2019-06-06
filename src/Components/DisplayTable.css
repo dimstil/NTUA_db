@@ -54,6 +54,9 @@
     width: 100%;
 }
 
+.Unit-Table input{
+  width: 60%;
+}
   
 .Unit-Table td, .Unit-Table thead {
   border: 1px solid #ddd;
@@ -62,7 +65,7 @@
 
 .Unit-Table tbody tr:nth-child(even){background-color: #f2f2f2;}
 
-.Unit-Table tbody tr:hover {background-color: #ddd;}
+.Unit-Table tbody td:hover {background-color: #ddd;}
 
 .Unit-Table thead {
   padding-top: 12px;

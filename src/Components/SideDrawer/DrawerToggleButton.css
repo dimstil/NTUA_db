@@ -11,6 +11,10 @@
     box-sizing: border-box;
     margin-left: 1rem;
 }
+.toggle-button:hover{
+    background-color: #45a049;
+    color: rgb(211, 212, 218);
+}
 
 .toggle-button:focus {
     outline: none;

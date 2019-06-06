@@ -31,16 +31,18 @@ class sideDrawer extends Component  {
        
         return(<div>
     <CustomizedDialogs type={this.state.query} throwError={this.props.throwError}/>
+    
         <nav className={this.state.drawerClasses}>
+        <a onClick={this.props.drawerClickHandler} id="slideBack">&#10094;</a> 
             <ul>
-                <li><button onClick ={() => this.changeType(1)}>Query 1</button></li>
-                <li><button onClick ={() => this.changeType(2)}>Query 2</button></li>
-                <li><button onClick ={() => this.changeType(3)}>Query 3</button></li>
-                <li><button onClick ={() => this.changeType(4)}>Query 4</button></li>
-                <li><button onClick ={() => this.changeType(5)}>Query 5</button></li>
-                <li><button onClick ={() => this.changeType(6)}>Query 6</button></li>
-                <li><button onClick ={() => this.changeType(7)}>Query 7</button></li>
-                <li><button onClick ={() => this.changeType(8)}>View</button></li>
+                <li><a onClick ={() => this.changeType(1)}>Query 1</a></li>
+                <li><a onClick ={() => this.changeType(2)}>Query 2</a></li>
+                <li><a onClick ={() => this.changeType(3)}>Query 3</a></li>
+                <li><a onClick ={() => this.changeType(4)}>Query 4</a></li>
+                <li><a onClick ={() => this.changeType(5)}>Query 5</a></li>
+                <li><a onClick ={() => this.changeType(6)}>Query 6</a></li>
+                <li><a onClick ={() => this.changeType(7)}>Query 7</a></li>
+                <li><a onClick ={() => this.changeType(8)}>View</a></li>
 
                 </ul>
             </nav>

@@ -17,6 +17,7 @@ class GetEmployee extends Component {
 	componentDidMount() {
 		this.retrieveData();
 	}
+	
 	retrieveData(){
 		axios.get('http://localhost:5000/view2', {
 			params: {
@@ -36,7 +37,7 @@ class GetEmployee extends Component {
 			formFields.map((field) => field.value = "");
 			var selquer = {
 				eFirst: eFirst,
-				eLast: eLast
+                eLast: eLast
 			};
 			for (var x in selquer) {
 				if (selquer[x] === "") {

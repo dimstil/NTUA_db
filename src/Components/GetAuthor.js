@@ -89,9 +89,9 @@ class GetAuthor extends Component {
 			<div className="GetAuthor">
 				<h2>Author Info</h2>
 				<form>
-					Author ID: <input type="text" id="sel-authID" /><br/>
-					First Name: <input type="text" id="sel-aFirst" /><br/>
-					Last Name: <input type="text" id="sel-aLast" /><br/>
+					Author ID: <input type="text" id="sel-authID" placeholder="not necessary for input"/><br/>
+					First Name: <input type="text" id="sel-aFirst" placeholder="e.g. Babis"/><br/>
+					Last Name: <input type="text" id="sel-aLast" placeholder="e.g. Xaralabidis"/><br/>
 					Birth Date : <input type="date" id="sel-aBirthdate" /><br/>
 					<button onClick={this.getAuthor}>Get Author</button>
 					<button onClick={this.insUpdate} className="formInput">Insert Author</button>

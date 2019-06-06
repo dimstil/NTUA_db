@@ -133,10 +133,11 @@ class App extends Component {
     console.log(this.state.errorMsg);
     return (
       <div className="App">
-        <Toolbar changeType={this.setType} //home={this.setHomepageType} 
+        <Toolbar changeType={this.setType} style={{zIndex:'20'}} //home={this.setHomepageType} 
         drawerClickHandler={this.drawerToggleClickHandler}
         style={{zIndex:"600"}}/>
-        <SideDrawer changeType={this.setType} show={this.state.sideDrawerOpen} throwError={this.setErrorMsg}/>
+        <SideDrawer changeType={this.setType} show={this.state.sideDrawerOpen}
+         drawerClickHandler={this.drawerToggleClickHandler} throwError={this.setErrorMsg}/>
         {backdrop}
         <main>
           

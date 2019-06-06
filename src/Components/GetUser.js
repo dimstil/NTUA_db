@@ -99,17 +99,17 @@ class GetUser extends Component {
 	render() {
 		return (
 			<div className="GetUser">
-				<h2>User Info</h2>
+				<h2>Member Info</h2>
 				<form>
-					User ID: <input type="text" id="sel-memberID" placeholder="Number"/><br/>
+					Member ID: <input type="text" id="sel-memberID" placeholder="Number"/><br/>
 					First Name: <input type="text" id="sel-mFirst" placeholder="e.g Babis"/><br/>
 					Last Name: <input type="text" id="sel-mLast" placeholder = "e.g Xaralabidis"/><br/>
                     Street: <input type="text" id="sel-street" placeholder = "e.g Hroon Politexneiou" /><br/>
                     Street No.: <input type="text" id="sel-streetNumber" placeholder="Number e.g. 232"/><br/>
                     Postal Code: <input type="text" id="sel-postalCode" placeholder="5 digit number e.g.6666"/><br/>
 					Birth Date : <input type="date" id="sel-mBirthdate" /><br/>
-					<button onClick={this.getUser}>Get User</button>
-					<button onClick={this.insUpdate} className="formInput">Insert User</button>
+					<button onClick={this.getUser}>Get Member</button>
+					<button onClick={this.insUpdate} className="formInput">Insert Member</button>
 				</form>
 			</div>
 		);
