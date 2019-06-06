@@ -17,6 +17,7 @@ class GetEmployee extends Component {
 	componentDidMount() {
 		this.retrieveData();
 	}
+	
 	retrieveData(){
 		axios.get('http://localhost:5000/view2', {
 			params: {

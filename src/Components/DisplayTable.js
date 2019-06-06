@@ -190,6 +190,7 @@ const TableHead = (props) => {
 
                     {(props.addCopy) ? <td>Copies</td> : <></>}
                     <td style={{ display: 'none' }}/>   
+                    <td></td>
 
             </tr>
         )
@@ -289,7 +290,7 @@ class TableRow extends Component {
                         <i onClick={() => { this.props.manCopy(false) }} className="redSym" style={{ cursor: 'pointer' }}>-</i> </td>
                         :   <></>}
                           {(this.state.updateMode === []) ? <></> :
-                        <td style={{}}>  <button onClick={() => this.updateRow()}>Update</button> </td>}
+                        <td style={{}}>  <i onClick={() => this.updateRow()}>&#128393;</i> </td>}
                 </tr>
             );
         }

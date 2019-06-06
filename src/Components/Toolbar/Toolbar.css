@@ -6,6 +6,8 @@
     background: #4CAF50;
     height: 56px;
     z-index: 25px;
+    scroll-snap-destination: 0px 0px;
+    overflow: hidden;
 }
 
 .toolbar_navigation{
