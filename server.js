@@ -70,7 +70,7 @@ app.route('/book')
   })
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
-    console.log(qdata);
+
     var selectQuery = "select book.isbn as \"ISBN\", title as \"Title\", pubYear as \"Published on\", numpages as \"No. of Pages\", pubName as \"Published by\", count(copies.isbn) as \"No. of Copies\" from book left join copies on book.ISBN=copies.ISBN"
 
     const orderBy = qdata["by"];
@@ -123,7 +123,7 @@ app.route('/book')
   })
   .delete((req, res) => {
     const query = JSON.parse(req.query[0])
-    console.log(query.ISBN)
+
     const deleteQuery = `delete from book where book.isbn = ${query.ISBN};`
     con.query(deleteQuery, (err) => {
       if (err) throw err;
@@ -133,7 +133,7 @@ app.route('/book')
   .put((req, res) => {
     const fields = req.body.fields;
     const key = req.body.key;
-    console.log(fields);
+
 
     var selectQuery = `update book set ${Object.keys(fields).map(field => `book.${field} = \'${fields[`${field}`]}\'`).join(',')} where book.isbn=\'${key.ISBN}\';`;
 
@@ -257,7 +257,7 @@ app.route('/author')
     if (fields.aBirthdate) {
       fields.aBirthdate = dateFrontToBack(fields.aBirthdate);
     }
-    console.log(fields);
+
     var selectQuery = `update author set ${Object.keys(fields).map(field => `author.${field} = \'${fields[`${field}`]}\'`).join(',')} where author.ID=\'${key.ID}\';`;
 
 
@@ -322,7 +322,7 @@ app.route('/member')
   })
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
-    console.log(qdata);
+
     var selectQuery = "select member.ID as \"ID\", mFirst as \"First Name\", mLast as \"Last Name\", street as \"Street\", streetNumber as \"Street Number\", postalCode as \"Postal Code\", mBirthdate as \"Date of Birth\", count(borrows.ID) as \"# Borrowed Books\" from member left join  borrows on member.ID=borrows.ID";
     const orderBy = qdata["by"];
     delete qdata["by"];
@@ -388,7 +388,7 @@ app.route('/member')
       fields.mBirthdate = dateFrontToBack(fields.mBirthdate);
     }
 
-    console.log(fields);
+
 
     var selectQuery = `update member set ${Object.keys(fields).map(field => `member.${field} = \'${fields[`${field}`]}\'`).join(',')} where member.ID=${key.ID};`;
 
@@ -436,7 +436,7 @@ app.route('/bookCopy')
 
 app.route('/query')
   .get((req, res) => {
-    console.log(req.query.num);
+
     const queryNum = req.query.num
     let query = "";
     switch (Number(queryNum)) {
@@ -497,7 +497,7 @@ app.route('/view2')
   })
   .get((req, res) => {
     var qdata = JSON.parse(req.query.query);
-    console.log(qdata);
+
     var selectQuery = "select id as \'ID\', eFirst as \'First Name\' , eLast as \'Last Name\' from employee_no_salary";
     const orderBy = qdata["by"];
     delete qdata["by"];
@@ -552,7 +552,7 @@ app.route('/view2')
   .put((req, res) => {
     const fields = req.body.fields;
     const key = req.body.key;
-    console.log(fields);
+    
     var selectQuery = `update employee_no_salary set ${Object.keys(fields).map(field => `employee_no_salary.${field} = \'${fields[`${field}`]}\'`).join(',')} where employee_no_salary.ID=${key.ID};`;
 
     console.log(selectQuery);

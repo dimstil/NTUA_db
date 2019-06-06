@@ -12,10 +12,9 @@ class AlertDismissible extends React.Component {
     }
   
     componentDidUpdate(prevProps){
-      console.log("BIKA");
-      console.log(prevProps.msg+"-"+this.props.msg);
+
       if(prevProps.msg!== this.props.msg){
-        //console.log(prevProps.msg+"-"+this.props.msg);
+
         this.setState({
           show: (this.props.msg)?true:false,
           errorMsg : this.props.msg
@@ -31,7 +30,7 @@ class AlertDismissible extends React.Component {
         this.setState({ show: false, errorMsg:"" });
         this.props.handleDism();
       }
-      console.log(this.state);
+
       
       return (
         <>

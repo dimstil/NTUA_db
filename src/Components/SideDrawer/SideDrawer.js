@@ -8,7 +8,7 @@ class sideDrawer extends Component  {
             query : 0,
             drawerClasses : (props.show)?"side-drawer open":"side-drawer"
         }
-        console.log(props);
+
     }
     componentDidUpdate(prevProps) {
         if(prevProps!==this.props){
@@ -25,7 +25,7 @@ class sideDrawer extends Component  {
         })
     };
    
-    //console.log(props)
+
     render(){
     
        

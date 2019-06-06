@@ -84,7 +84,8 @@ create table if not exists employee(
     eFirst varchar(60),
     eLast varchar(60), 
     salary int,
-    primary key (ID)
+    primary key (ID),
+    check (salary >= 0)
 );
 
 create table if not exists permanent_employee(
@@ -116,7 +117,7 @@ create table if not exists belongs_to(
     categoryName varchar(60) not null,
     primary key(ISBN,categoryName),
     foreign key(ISBN) references Book(ISBN) on delete cascade on update cascade,
-    foreign key(categoryName) references category(categoryName) on delete cascade on update cascade
+    foreign key(categoryName) references category(categoryName) on delete no action on update cascade
 );
 
 create table if not exists reminder(

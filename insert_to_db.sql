@@ -70,7 +70,7 @@ INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) 
 -- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('3', '5234567891234', '1', '2019-05-20');
 
 -- More than 5 books
-INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('4', '6234567891234', '2', '2019-05-15');
+-- INSERT INTO `librarydb`.`borrows` (`ID`, `ISBN`, `copyNr`, `date_of_borrowing`) VALUES ('4', '6234567891234', '2', '2019-05-15');
 
 
 INSERT INTO `librarydb`.`employee` (`ID`, `eFirst`, `eLast`, `salary`) VALUES ('1', 'Kwnstantina', 'Skovola', '80');

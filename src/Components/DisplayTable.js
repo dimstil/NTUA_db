@@ -222,7 +222,7 @@ class TableRow extends Component {
 
             to_update.fields[field.getAttribute('value')] = elements[it].value;
         }
-        console.log(to_update);
+
         if (Object.keys(to_update.fields).length !== 0) {
             axios.put(this.props.address, to_update).then((response) => {
                 if (response.data.errorMsg) {
@@ -242,9 +242,9 @@ class TableRow extends Component {
 
     }
     doubleClickHandle(i, obj) {
-        console.log(i + "-" + this.props.object + "-" + this.props.prim_keys);
+     
         for (var key in this.props.prim_keys) {
-            console.log(key, this.props.object[this.props.prim_keys[key]]);
+
             if (obj === this.props.object[this.props.prim_keys[key]]) {
                 this.props.errorHandle("Cannot update primary key " + this.props.prim_key);
                 return;
@@ -260,13 +260,13 @@ class TableRow extends Component {
             });
         }
         else {
-            console.log("remove");
+
             this.state.updateMode.splice(ind, 1)
             this.setState({
                 updateMode: this.state.updateMode
             })
         }
-        console.log(i);
+
     }
 
     render() {
@@ -290,7 +290,7 @@ class TableRow extends Component {
                         <i onClick={() => { this.props.manCopy(false) }} className="redSym" style={{ cursor: 'pointer' }}>-</i> </td>
                         :   <></>}
                           {(this.state.updateMode === []) ? <></> :
-                        <td style={{}}>  <i onClick={() => this.updateRow()}>&#128393;</i> </td>}
+                        <td style={{}}>  <i onClick={() => this.updateRow()} style={{cursor:'pointer'}}>&#128393;</i> </td>}
                 </tr>
             );
         }

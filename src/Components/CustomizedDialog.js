@@ -5,8 +5,6 @@ import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 
@@ -71,8 +69,8 @@ class CustomizedDialogs extends React.Component {
         })
     }
     componentDidUpdate(prevProps) {
-        console.log("didUpdate");
-        console.log(this.props);
+
+
         if(prevProps!==this.props){
             this.setState({
                 open :  (this.props.type!==0),
@@ -116,7 +114,7 @@ class CustomizedDialogs extends React.Component {
 
   render() {
 
-     console.log(this.state)
+
      if(this.state.open)
         axios.get("http://localhost:5000/query",{
             params:{
@@ -135,7 +133,7 @@ class CustomizedDialogs extends React.Component {
                         data: response.data.result
                     })
                    
-                console.log(response.data)    
+
             }
 
             });
@@ -158,7 +156,7 @@ class CustomizedDialogs extends React.Component {
                     case(3):
                         return <>Books in Descendig Page Order</>;
                     case(4):
-                        return <>Members who have more than 3 books borrowed and those Books</>;
+                        return <>Members who have more than 3 books borrowed and the number of those Books</>;
                     case(5):
                         return <>ISBN of Books that are borrowed by 2 or more Members</>;
                     case(6):

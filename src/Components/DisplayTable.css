@@ -9,6 +9,8 @@
   height: 1rem;
   border-radius: 1rem;
   size: 1rem;
+  position: relative;
+  left:25%;
 }
 .delSym:hover{
   background: #940000
